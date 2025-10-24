@@ -8,6 +8,7 @@ on:
       - infra
 
 env:
+  SCW_PROJECT_ID: "d6f62684-5d48-4151-97d7-3364fa5ac43a"
   SCW_SECRET_KEY: "47bc2d6b-0c9c-4a49-8b88-d0ae69f42def"
   SCW_DEFAULT_REGION: pl-waw
   CONTAINER_NAMESPACE_ID: "8ffb2ab0-b5d1-4b41-a516-fb3ff93c46ea"
@@ -73,13 +74,24 @@ jobs:
 
       - name: Deploy Frontend Serverless Container
         run: |
+          export NAMESPACE_ID=$(curl -X POST "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/namespaces" \
+            -H "accept: application/json" \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{
+                \"name\": \"betontracker\", \
+                \"project_id\": \"$SCW_PROJECT_ID\"
+                }" | jq -r ."id")
+
+          echo "Created Namespace ID: $NAMESPACE_ID"
+
           echo $(curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
             "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
             -d '{
               "name": "frontend",
-              "namespace_id": "$CONTAINER_NAMESPACE_ID",
+              "namespace_id": "$NAMESPACE_ID",
               "registry_image": "$FRONTEND_IMAGE_NAME"
             }')
 
