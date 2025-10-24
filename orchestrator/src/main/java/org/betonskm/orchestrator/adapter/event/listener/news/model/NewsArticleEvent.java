@@ -14,7 +14,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class NewsArticleEvent {
 
-  private String url;
+  private String feedUrl;
+  private String articleUrl;
   private String s3path;
   private String etag;
   private OffsetDateTime fetchedAt;

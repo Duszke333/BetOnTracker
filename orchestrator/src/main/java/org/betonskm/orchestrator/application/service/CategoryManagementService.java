@@ -78,7 +78,7 @@ public class CategoryManagementService implements CategoryManagementUseCase {
     if (optionalWebsite.isPresent()) {
       Website website = optionalWebsite.get();
       log.info("[CATEGORY MANAGEMENT] Website with URL {} already exists: {}", command.getWebsiteUrl(), website);
-      if (categoryWebsiteRepository.link(category, website)) {
+      if (categoryWebsiteRepository.link(category.getId(), website.getId())) {
         log.info("[CATEGORY MANAGEMENT] Website with URL {} is already linked to category ID {}", command.getWebsiteUrl(), command.getCategoryId());
         return website;
       }
@@ -93,7 +93,7 @@ public class CategoryManagementService implements CategoryManagementUseCase {
     Website savedWebsite = websiteRepository.save(website);
     log.info("[CATEGORY MANAGEMENT] Created new website: {}", savedWebsite);
 
-    categoryWebsiteRepository.link(category, savedWebsite);
+    categoryWebsiteRepository.link(category.getId(), savedWebsite.getId());
     log.info("[CATEGORY MANAGEMENT] Added website to category: {}", savedWebsite);
     return savedWebsite;
   }

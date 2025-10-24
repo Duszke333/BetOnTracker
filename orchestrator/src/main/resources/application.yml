@@ -33,8 +33,14 @@ aws:
     endpoint: ${AWS_SQS_ENDPOINT:https://sqs.mnq.fr-par.scaleway.com}
     region: ${AWS_SQS_REGION:fr-par}
     news-articles-queue-url: ${NEWS_ARTICLES_SQS_URL:https://sqs.mnq.fr-par.scaleway.com/000000000000/news-articles-queue}
-  access-key-id: ${SQS_ADMIN_ACCESS_KEY_ID:accessKey123}
-  secret-key: ${SQS_ADMIN_SECRET_KEY:secretKey123}
+    access-key-id: ${SQS_ADMIN_ACCESS_KEY_ID:x}
+    secret-key: ${SQS_ADMIN_SECRET_KEY:x}
+  sns:
+    endpoint: ${AWS_SNS_ENDPOINT:https://sqs.mnq.fr-par.scaleway.com}
+    region: ${AWS_SNS_REGION:fr-par}
+    summarize-articles-topic-arn: ${SUMMARIZE_ARTICLES_SNS_ARN:arn:aws:sns:fr-par:000000000000:summarize-articles-topic}
+    access-key-id: ${SNS_ADMIN_ACCESS_KEY_ID:x}
+    secret-key: ${SNS_ADMIN_SECRET_KEY:x}
 
 app:
   scheduling:

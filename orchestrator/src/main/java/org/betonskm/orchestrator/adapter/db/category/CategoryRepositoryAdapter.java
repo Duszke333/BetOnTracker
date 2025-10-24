@@ -30,4 +30,9 @@ public class CategoryRepositoryAdapter implements CategoryRepository {
   public Optional<Category> fetchCategoryById(Integer id) {
     return repository.findById(id).map(mapper::fromEntity);
   }
+
+  @Override
+  public Optional<String> fetchCategoryNameById(Integer id) {
+    return repository.findNameById(id);
+  }
 }
