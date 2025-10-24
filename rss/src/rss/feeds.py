@@ -7,7 +7,7 @@ def parse_feed(url):
     entries = []
     for entry in feed.entries:
         entries.append({
-            'title': entry.title,
+            'headerStart': entry.title,
             'link': entry.link,
             'summary': entry.summary
         })

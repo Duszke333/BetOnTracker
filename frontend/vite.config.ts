@@ -11,4 +11,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target:
+          "https://betonskmdbrk79no-orchiestrator-2.functions.fnc.pl-waw.scw.cloud",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

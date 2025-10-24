@@ -8,9 +8,7 @@
   xmlns:slash="http://purl.org/rss/1.0/modules/slash/">
   <channel>
     <title>Wiadomości ztm.gda.pl</title>
-    <description>najnowsze wiadomości z oficjalnej strony Zarządu Transportu Miejskiego w Gdańsku
-      RSS
-    </description>
+    <description>Najnowsze wiadomości z oficjalnej strony Zarządu Transportu Miejskiego w Gdańsku RSS. </description>
     <link>https://ztm.gda.pl/wiadomosci</link>
     <image>
       <url>https://ztm.gda.pl/images/winieta-logo.png</url>

@@ -1,5 +1,13 @@
-import type { RssItem } from "../types/types.ts";
 import Tag from "./Tag.tsx";
+
+export interface RssItem {
+  id: string;
+  title: string;
+  link: string;
+  description: string;
+  tags: string[];
+  pubDate: Date;
+}
 
 export default function Item({
   link,
