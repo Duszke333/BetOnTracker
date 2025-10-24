@@ -9,5 +9,5 @@ cd agents
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python symulator_interface.py
+python3 main.py
 ```
