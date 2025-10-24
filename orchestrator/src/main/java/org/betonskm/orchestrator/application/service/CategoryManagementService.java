@@ -12,6 +12,7 @@ import org.betonskm.orchestrator.configuration.TimeProvider;
 import org.betonskm.orchestrator.configuration.exception.OrchestratorException;
 import org.betonskm.orchestrator.domain.category.Category;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -23,6 +24,7 @@ public class CategoryManagementService implements CategoryManagementUseCase {
 
 
   @Override
+  @Transactional
   public Category createCategory(CreateCategoryCommand command) {
 
     Category category = Category.builder()
@@ -35,11 +37,13 @@ public class CategoryManagementService implements CategoryManagementUseCase {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<Category> fetchAllActiveCategories() {
     return categoryRepository.fetchAllActiveCategories();
   }
 
   @Override
+  @Transactional
   public void decommissionCategory(DecommissionCategoryCommand command) {
     Category category = categoryRepository.fetchCategoryById(command.getCategoryId())
         .orElseThrow(() -> new OrchestratorException("Category with ID " + command.getCategoryId() + " not found"));
