@@ -14,16 +14,17 @@ public class CategoryWebsiteRepositoryAdapter implements CategoryWebsiteReposito
   private final CategoryWebsiteEntityRepository categoryWebsiteEntityRepository;
 
   @Override
-  public void link(Integer categoryId, UUID websiteId) {
+  public boolean link(Integer categoryId, UUID websiteId) {
     CategoryWebsiteId id = new CategoryWebsiteId(categoryId, websiteId);
     if (categoryWebsiteEntityRepository.existsById(id)) {
       log.info("Link between category {} and website {} already exists", categoryId, websiteId);
-      return;
+      return false;
     }
     CategoryWebsite link = CategoryWebsite.builder()
         .id(id)
         .build();
     categoryWebsiteEntityRepository.save(link);
     log.info("Linked category {} with website {}", categoryId, websiteId);
+    return true;
   }
 }

@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface CategoryWebsiteRepository {
 
-  void link(Integer categoryId, UUID websiteId);
+  boolean link(Integer categoryId, UUID websiteId);
 }
