@@ -91,7 +91,7 @@ public class CategoryManagementController {
     categoryManagementUseCase.decommissionCategory(command);
   }
 
-  @PostMapping(path = ADD_WEBSITE_TO_FEED_PATH, consumes = APPLICATION_JSON_VALUE)
+  @PostMapping(path = ADD_WEBSITE_TO_FEED_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
   public WebsiteAPIResponse addWebsiteToFeed(
       @Parameter(description = "ID of the category to which the website will be added", required = true, example = "1")
       @PathVariable("categoryId") @Positive Integer categoryId,
@@ -100,7 +100,6 @@ public class CategoryManagementController {
     log.info("[ADD WEBSITE TO FEED] Request received for categoryId: {} to add website: {}", categoryId, request);
 
     AddWebsiteToCategoryCommand command = AddWebsiteToCategoryCommand.from(categoryId, request.getWebsiteUrl());
-    // Implementation goes here
 
     Website addedWebsite = categoryManagementUseCase.addWebsiteToCategory(command);
 
