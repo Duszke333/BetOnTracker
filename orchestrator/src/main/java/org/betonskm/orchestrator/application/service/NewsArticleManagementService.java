@@ -22,11 +22,11 @@ public class NewsArticleManagementService implements NewsArticleManagementUseCas
   @Transactional
   @Modifying
   public void updateWebsite(NewsArticleEvent event) {
-    Website website = websiteRepository.fetchByUrl(event.getUrl())
-        .orElseThrow(() -> new OrchestratorException("No website found for URL: " + event.getUrl()));
+    Website website = websiteRepository.fetchByUrl(event.getFeedUrl())
+        .orElseThrow(() -> new OrchestratorException("No website found for URL: " + event.getFeedUrl()));
 
     website.update(event);
     websiteRepository.save(website);
-    log.info("Updated article for website URL: {}", event.getUrl());
+    log.info("Updated article for website URL: {}", event.getFeedUrl());
   }
 }
