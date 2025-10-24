@@ -1,5 +1,6 @@
 package org.betonskm.orchestrator.adapter.db.categoryWebsite;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +17,6 @@ import org.springframework.stereotype.Component;
 public class CategoryWebsiteRepositoryAdapter implements CategoryWebsiteRepository {
 
   private final CategoryWebsiteEntityRepository categoryWebsiteEntityRepository;
-  private final CategoryMapper categoryMapper;
-  private final WebsiteMapper websiteMapper;
 
   @Override
   public boolean link(Integer categoryId, UUID websiteId) {
@@ -32,5 +31,10 @@ public class CategoryWebsiteRepositoryAdapter implements CategoryWebsiteReposito
     categoryWebsiteEntityRepository.save(link);
     log.info("Linked category {} with website {}", categoryId, websiteId);
     return true;
+  }
+
+  @Override
+  public List<Integer> fetchCategoryIdsByWebsiteId(UUID websiteId) {
+    return categoryWebsiteEntityRepository.getCategoryIdByWebsiteId(websiteId);
   }
 }
