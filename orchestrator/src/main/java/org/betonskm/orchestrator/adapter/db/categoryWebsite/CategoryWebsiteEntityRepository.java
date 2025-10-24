@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryWebsiteEntityRepository extends JpaRepository<CategoryWebsiteEntity, CategoryWebsiteEntityId> {
+public interface CategoryWebsiteEntityRepository extends JpaRepository<CategoryWebsite, CategoryWebsiteId> {
 
-  List<CategoryWebsiteEntity> findByCategoryId(Long categoryId);
+  List<CategoryWebsite> findByCategoryId(Long categoryId);
 
-  List<CategoryWebsiteEntity> findByWebsiteId(UUID websiteId);
+  List<CategoryWebsite> findByWebsiteId(UUID websiteId);
 
-  Optional<CategoryWebsiteEntity> findByCategoryIdAndWebsiteId(Long categoryId, UUID websiteId);
+  Optional<CategoryWebsite> findByCategoryIdAndWebsiteId(Long categoryId, UUID websiteId);
 
   void deleteByCategoryIdAndWebsiteId(Long categoryId, UUID websiteId);
 }

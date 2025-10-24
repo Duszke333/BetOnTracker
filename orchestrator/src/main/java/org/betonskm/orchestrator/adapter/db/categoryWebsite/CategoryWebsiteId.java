@@ -20,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class CategoryWebsiteEntityId implements Serializable {
+public class CategoryWebsiteId implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 2622231438285495094L;
