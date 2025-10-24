@@ -12,6 +12,8 @@ env:
   SCW_DEFAULT_REGION: pl-waw
   CONTAINER_NAMESPACE_ID: "8ffb2ab0-b5d1-4b41-a516-fb3ff93c46ea"
   ORCHESTRATOR_CONTAINER_ID: "9dfc5571-df8f-469b-8c3e-c869fe4660cb"
+  ORCHESTRATOR_IMAGE_NAME: "rg.pl-waw.scw.cloud/funcscwbetonskmdbrk79no/betontracker-orchestrator:latest"
+  FRONTEND_IMAGE_NAME: "rg.pl-waw.scw.cloud/funcscwbetonskmdbrk79no/betontracker-frontend:latest"
   FRONTEND_CONTAINER_ID: "c3d4bbd2-7436-43ad-94d0-68b20c0b209a"
   FUNCTION_NAMESPACE_ID: "d803573c-200a-46fe-8afe-3c1e6d67c8b3"
   FUNCTION_ID: "778934ba-6e58-4430-b684-a3a1a2b66827"
@@ -45,15 +47,20 @@ jobs:
 
       - name: Deploy Orchestrator Serverless Container
         run: |
-          curl -X PATCH \
+          export CONTAINER_ID = $(curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
-            "https://api.scaleway.com/containers/v1beta1/regions/fr-par/containers/$ORCHESTRATOR_CONTAINER_ID" \
+            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
             -d '{
               "name": "orchestrator",
               "namespace_id": "$CONTAINER_NAMESPACE_ID",
-              "registry_image": "betontracker-orchestrator:latest"
-            }'
+              "registry_image": "$ORCHESTRATOR_IMAGE_NAME"
+            }' | jq -r ".container.id")
+
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers/$CONTAINER_ID/deploy"
 
   deploy-frontend-container:
     runs-on: ubuntu-latest
@@ -64,15 +71,20 @@ jobs:
 
       - name: Deploy Frontend Serverless Container
         run: |
-          curl -X PATCH \
+          export CONTAINER_ID = $(curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
-            "https://api.scaleway.com/containers/v1beta1/regions/fr-par/containers/$FRONTEND_CONTAINER_ID" \
+            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
             -d '{
               "name": "frontend",
               "namespace_id": "$CONTAINER_NAMESPACE_ID",
-              "registry_image": "betontracker-frontend:latest"
-            }'
+              "registry_image": "$FRONTEND_IMAGE_NAME"
+            }' | jq -r ".container.id")
+
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers/$CONTAINER_ID/deploy"
 
   deploy-function:
     runs-on: ubuntu-latest
