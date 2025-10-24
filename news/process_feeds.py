@@ -131,7 +131,8 @@ def main():
                         fetched_at = dt.strftime('%Y-%m-%dT%H:%M:%S.000+00:00')
                     
                     message_data = {
-                        'url': url,
+                        'feedUrl': url,
+                        'articleUrl': entry['link'],
                         's3path': obj_name,
                         'etag': etag,
                         'fetchedAt': fetched_at
