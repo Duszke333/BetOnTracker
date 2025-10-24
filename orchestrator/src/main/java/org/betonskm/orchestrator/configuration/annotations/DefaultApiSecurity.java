@@ -1,6 +1,6 @@
 package org.betonskm.orchestrator.configuration.annotations;
 
-import static org.betonskm.orchestrator.configuration.Costants.BASIC_AUTH;
+import static org.betonskm.orchestrator.configuration.Constants.BASIC_AUTH;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.lang.annotation.Documented;

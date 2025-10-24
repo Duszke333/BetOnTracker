@@ -2,15 +2,21 @@ package org.betonskm.orchestrator.application.service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.betonskm.orchestrator.application.command.AddWebsiteToCategoryCommand;
 import org.betonskm.orchestrator.application.command.CreateCategoryCommand;
 import org.betonskm.orchestrator.application.command.DecommissionCategoryCommand;
 import org.betonskm.orchestrator.application.port.in.CategoryManagementUseCase;
 import org.betonskm.orchestrator.application.port.out.CategoryRepository;
+import org.betonskm.orchestrator.application.port.out.CategoryWebsiteRepository;
+import org.betonskm.orchestrator.application.port.out.WebsiteRepository;
 import org.betonskm.orchestrator.configuration.TimeProvider;
 import org.betonskm.orchestrator.configuration.exception.OrchestratorException;
 import org.betonskm.orchestrator.domain.category.Category;
+import org.betonskm.orchestrator.domain.website.Website;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +27,8 @@ public class CategoryManagementService implements CategoryManagementUseCase {
 
   private final CategoryRepository categoryRepository;
   private final TimeProvider timeProvider;
+  private final WebsiteRepository websiteRepository;
+  private final CategoryWebsiteRepository categoryWebsiteRepository;
 
 
   @Override
@@ -56,5 +64,37 @@ public class CategoryManagementService implements CategoryManagementUseCase {
     category.setDecommissionedAt(timeProvider.now());
     categoryRepository.save(category);
     log.info("[CATEGORY MANAGEMENT] Decommissioned category: {}", category);
+  }
+
+  @Override
+  @Transactional
+  @Modifying
+  public Website addWebsiteToCategory(AddWebsiteToCategoryCommand command) {
+
+    Category category = categoryRepository.fetchCategoryById(command.getCategoryId())
+        .orElseThrow(() -> new OrchestratorException("Category with ID " + command.getCategoryId() + " not found"));
+
+    Optional<Website> optionalWebsite = websiteRepository.fetchByUrl(command.getWebsiteUrl());
+    if (optionalWebsite.isPresent()) {
+      Website website = optionalWebsite.get();
+      log.info("[CATEGORY MANAGEMENT] Website with URL {} already exists: {}", command.getWebsiteUrl(), website);
+      if (categoryWebsiteRepository.link(category, website)) {
+        log.info("[CATEGORY MANAGEMENT] Website with URL {} is already linked to category ID {}", command.getWebsiteUrl(), command.getCategoryId());
+        return website;
+      }
+      website.incrementReferenceCount();
+      return websiteRepository.save(website);
+    }
+
+    Website website = Website.builder()
+        .url(command.getWebsiteUrl())
+        .referenceCount(1)
+        .build();
+    Website savedWebsite = websiteRepository.save(website);
+    log.info("[CATEGORY MANAGEMENT] Created new website: {}", savedWebsite);
+
+    categoryWebsiteRepository.link(category, savedWebsite);
+    log.info("[CATEGORY MANAGEMENT] Added website to category: {}", savedWebsite);
+    return savedWebsite;
   }
 }
