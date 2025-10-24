@@ -1,20 +1,21 @@
 [project]
-name = "rss"
+name = "news"
 version = "0.1.0"
-description = "BetOnTracker RSS Management Module"
+description = "BetOnTracker News Module"
 readme = "README.md"
 authors = [
     { name = "maksnowak", email = "59841779+maksnowak@users.noreply.github.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi>=0.120.0",
+    "boto3>=1.40.58",
+    "dotenv>=0.9.9",
     "feedparser>=6.0.12",
-    "uvicorn>=0.38.0",
+    "requests>=2.32.5",
 ]
 
 [project.scripts]
-rss = "rss:main"
+news = "news:main"
 
 [build-system]
 requires = ["hatchling"]
