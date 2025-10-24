@@ -1,6 +1,6 @@
 package org.betonskm.orchestrator.configuration;
 
-import static org.betonskm.orchestrator.configuration.Costants.BASIC_AUTH;
+import static org.betonskm.orchestrator.configuration.Constants.BASIC_AUTH;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

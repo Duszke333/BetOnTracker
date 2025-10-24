@@ -3,7 +3,9 @@ package org.betonskm.orchestrator.adapter.db.category;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CategoryEntityRepository extends JpaRepository<CategoryEntity, Integer> {
 
   @Query("FROM CategoryEntity c WHERE c.decommissionedAt IS NULL")

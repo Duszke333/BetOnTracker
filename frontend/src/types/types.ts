@@ -1,13 +1,14 @@
-export interface Item {
+export interface RssItem {
   id: string;
   title: string;
   link: string;
   description: string;
+  tags: string[];
   pubDate: Date;
 }
 
-export interface Channel {
+export interface RssChannel {
   title: string;
   description: string;
-  items: Item[];
+  items: RssItem[];
 }
