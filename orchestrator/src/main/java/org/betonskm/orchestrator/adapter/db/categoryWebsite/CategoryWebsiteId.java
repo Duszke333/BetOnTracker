@@ -3,6 +3,7 @@ package org.betonskm.orchestrator.adapter.db.categoryWebsite;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class CategoryWebsiteId implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 2622231438285495094L;
   @NotNull
   @Column(name = "category_id", nullable = false)
