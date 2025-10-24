@@ -21,9 +21,33 @@ queue = sqs.get_queue_by_name(QueueName='queue-raw-articles')
 print(queue.url)
 print(queue.attributes)
 
-for i in range (0,10):
-    payload = {
-        "article_path": "/feeds/raw/telecom/article_"+str(i)+".txt",
-        "category": "telecom",
-    }
-    queue.send_message(MessageBody=json.dumps(payload))
+# for i in range (0,10):
+#     payload = {
+#         "article_path": "/feeds/raw/telecom/article_"+str(i)+".txt",
+#         "category": "telecom",
+#     }
+#     queue.send_message(MessageBody=json.dumps(payload))
+
+payload = {
+    "article_path": "/feeds/raw/telecom/article_1.txt",
+    "category": "telecom",
+}
+queue.send_message(MessageBody=json.dumps(payload))
+
+payload = {
+    "article_path": "/feeds/raw/phones/article_1.txt",
+    "category": "apple",
+}
+queue.send_message(MessageBody=json.dumps(payload))
+
+payload = {
+    "article_path": "/feeds/raw/phones/article_1.txt",
+    "category": "computers",
+}
+queue.send_message(MessageBody=json.dumps(payload))
+
+payload = {
+    "article_path": "/feeds/raw/phones/article_1.txt",
+    "category": "fruits",
+}
+queue.send_message(MessageBody=json.dumps(payload))

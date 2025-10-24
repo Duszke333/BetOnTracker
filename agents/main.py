@@ -4,6 +4,8 @@ import time
 import json
 from dotenv import load_dotenv
 
+from evaluate import evaluate_relevance
+
 load_dotenv()
 
 sqs = boto3.resource('sqs',
@@ -46,6 +48,16 @@ def handle_message(body, attributes):
     # 3. If relevant, generate summary, tags, importance score, sentiment score, source reliability score
     # 4. Store summary and text content to S3
     # 5. Send message to another SQS queue with summary_path, tags, category, importance_score, sentiment_score, source_reliability_score
+
+    # 1. Mock reading article from S3
+    article_content = S3_MOCK_CONTENT
+    
+    # 2. Relevance check
+    is_relevant = evaluate_relevance(article_content, category)
+    if not is_relevant:
+        print(f"[AGENTS] Article {article_path} is not relevant to category {category}. Skipping.")
+        return
+    print(f"[AGENTS] Article {article_path} is relevant to category {category}. Processing...")
 
 
 def main():
