@@ -1,0 +1,136 @@
+import logging
+from concurrent.futures import ThreadPoolExecutor
+import json
+import feedparser
+import os
+import boto3
+import uuid
+import requests
+from botocore.exceptions import ClientError
+from dotenv import load_dotenv
+from io import BytesIO
+
+def parse_feed(url, etag=None, modified=None):
+    logging.info(f"Feed parsing requested for URL: {url}")
+    if not etag and not modified:
+        logging.warning('No etag or modified date provided; performing full fetch.')
+    feed = feedparser.parse(url, etag=etag, modified=modified)
+    if feed.entries:
+        parsed_entries = []
+        for entry in feed.entries:
+            parsed_entries.append({
+                'title': entry.title,
+                'link': entry.link,
+                'description': entry.description,
+                'date': entry.published
+            })
+        logging.info(f"Parsed {len(parsed_entries)} entries from the feed.")
+        return parsed_entries, feed.get('etag'), feed.get('modified')
+    else:
+        logging.info("No new entries found in the feed.")
+        return [], feed.get('etag'), feed.get('modified')
+
+def upload_to_s3(content, object_name):
+    load_dotenv()
+
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID') or ''
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY') or ''
+
+
+    # Generate a presigned URL for the object
+    session = boto3.session.Session()
+
+    s3_client = session.client(
+        service_name='s3',
+        region_name='fr-par',
+        use_ssl=True,
+        endpoint_url='https://hackathon-team-5.s3.fr-par.scw.cloud',
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    )
+
+    bucket_name = 'hackathon-team-5'
+    fields = {
+            "acl": "private",
+            "Cache-Control": "nocache",
+            "Content-Type": "application/json"
+        }
+    conditions = [
+        {"key": object_name},
+        {"acl": "private"},
+        {"Cache-Control": "nocache"},
+        {"Content-Type": "application/json"}
+    ]
+    expiration = 120 # Max two minutes to start upload
+
+    try:
+        response = s3_client.generate_presigned_post(Bucket=bucket_name,
+                                                        Key=object_name,
+                                                        Fields=fields,
+                                                        Conditions=conditions,
+                                                        ExpiresIn=expiration)
+    except ClientError as e:
+        logging.error(e)
+        exit()
+
+    # The response contains the presigned URL and required fields
+    print(response)
+
+    stream = BytesIO(content.encode('utf-8'))
+    files = {'file': (object_name, stream)}
+    http_response = requests.post(response['url'], data=response['fields'], files=files)
+    print(http_response.content)
+
+def send_queue_message(message_body):
+    load_dotenv()
+
+    # Get the service resource
+    sqs = boto3.resource('sqs',
+      endpoint_url=os.environ.get('SQS_ENDPOINT_URL'),
+      aws_access_key_id=os.environ.get('SQS_ADMIN_ACCESS_KEY_ID'),
+      aws_secret_access_key=os.environ.get('SQS_ADMIN_SECRET_KEY'),
+      region_name='fr-par')
+
+
+    # Create the queue. This returns an SQS.Queue instance
+    queue = sqs.get_queue_by_name(QueueName='queue-new-articles')
+
+    # You can now access identifiers and attributes
+    print(queue.url)
+    print(queue.attributes)
+
+    queue.send_message(MessageBody=message_body)
+
+def main():
+    logging.basicConfig(level=logging.INFO)
+    logging.info("News module initialized.")
+
+    urls = [
+        'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
+        'http://feeds.bbci.co.uk/news/rss.xml',
+        'https://www.theguardian.com/world/rss',
+    ]
+
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        futures = {executor.submit(parse_feed, url): url for url in urls}
+        for future in futures:
+            url = futures[future]
+            try:
+                entries, etag, modified = future.result()
+                logging.info(f"Fetched {len(entries)} entries from {url}")
+                for entry in entries:
+                    obj_name = f'articles/{str(uuid.uuid4())}.json'
+                    upload_to_s3(json.dumps(entry), obj_name)
+                    send_queue_message(json.dumps({
+                        'feed': url,
+                        'etag': etag,
+                        'modified': modified,
+                        's3_object': obj_name
+                    }))
+            except Exception as e:
+                logging.error(f"Error fetching feed from {url}: {e}")
+
+    logging.info("News module processing completed.")
+
+if __name__ == "__main__":
+    main()
