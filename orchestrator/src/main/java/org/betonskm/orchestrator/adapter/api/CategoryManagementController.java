@@ -1,6 +1,6 @@
 package org.betonskm.orchestrator.adapter.api;
 
-import static org.betonskm.orchestrator.configuration.Costants.FEED_MANAGEMENT_PREFIX;
+import static org.betonskm.orchestrator.configuration.Constants.FEED_MANAGEMENT_PREFIX;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 import io.swagger.v3.oas.annotations.Operation;
