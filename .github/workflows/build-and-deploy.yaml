@@ -57,6 +57,8 @@ jobs:
               "registry_image": "$ORCHESTRATOR_IMAGE_NAME"
             }' | jq -r ."id")
 
+          echo "Deployed Orchestrator Container ID: $CONTAINER_ID"
+
           curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
@@ -71,7 +73,7 @@ jobs:
 
       - name: Deploy Frontend Serverless Container
         run: |
-          export CONTAINER_ID=$(curl -X POST \
+          echo $(curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
             "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
@@ -79,7 +81,9 @@ jobs:
               "name": "frontend",
               "namespace_id": "$CONTAINER_NAMESPACE_ID",
               "registry_image": "$FRONTEND_IMAGE_NAME"
-            }' | jq -r ."id")
+            }')
+
+          echo "Deployed Frontend Container ID: $CONTAINER_ID"
 
           curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
