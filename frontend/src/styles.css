@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+p {
+  margin: 0;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+}
