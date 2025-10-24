@@ -1,5 +1,9 @@
-from . import feeds
+from .router import app
+import uvicorn
+import logging
 
 def main() -> None:
-    print("Hello from rss!")
-    print(feeds.parse_feed("resources/test_rss.xml"))
+    logging.basicConfig(level=logging.INFO)
+    logging.info("RSS module initialized.")
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+    logging.info("RSS module application started.") 
