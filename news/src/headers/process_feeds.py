@@ -9,6 +9,7 @@ import requests
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from io import BytesIO
+from datetime import datetime
 
 def parse_feed(url, etag=None, modified=None):
     logging.info(f"Feed parsing requested for URL: {url}")
@@ -22,13 +23,13 @@ def parse_feed(url, etag=None, modified=None):
                 'title': entry.title,
                 'link': entry.link,
                 'description': entry.description,
-                'date': entry.published
+                'date': entry.published_parsed
             })
         logging.info(f"Parsed {len(parsed_entries)} entries from the feed.")
-        return parsed_entries, feed.get('etag'), feed.get('modified')
+        return parsed_entries, feed.get('etag'), feed.get('modified_parsed')
     else:
         logging.info("No new entries found in the feed.")
-        return [], feed.get('etag'), feed.get('modified')
+        return [], feed.get('etag'), feed.get('modified_parsed')
 
 def upload_to_s3(content, object_name):
     load_dotenv()
@@ -106,9 +107,7 @@ def main():
     logging.info("News module initialized.")
 
     urls = [
-        'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-        'http://feeds.bbci.co.uk/news/rss.xml',
-        'https://www.theguardian.com/world/rss',
+        'https://www.telepolis.pl/rss'
     ]
 
     with ThreadPoolExecutor(max_workers=5) as executor:
@@ -121,12 +120,26 @@ def main():
                 for entry in entries:
                     obj_name = f'articles/{str(uuid.uuid4())}.json'
                     upload_to_s3(json.dumps(entry), obj_name)
-                    send_queue_message(json.dumps({
-                        'feed': url,
+                    
+                    # Convert modified tuple to ISO format string with timezone
+                    fetched_at = None
+                    if modified:
+                        # modified is a time.struct_time, use first 6 elements for datetime
+                        dt = datetime(*modified[:6])
+                        # Format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+                        # Add milliseconds (000) and timezone offset (+00:00 for UTC)
+                        fetched_at = dt.strftime('%Y-%m-%dT%H:%M:%S.000+00:00')
+                    
+                    message_data = {
+                        'feedUrl': url,
+                        'articleUrl': entry['link'],
+                        's3path': obj_name,
                         'etag': etag,
-                        'modified': modified,
-                        's3_object': obj_name
-                    }))
+                        'fetchedAt': fetched_at
+                    }
+                    
+                    print(json.dumps(message_data))
+                    send_queue_message(json.dumps(message_data))
             except Exception as e:
                 logging.error(f"Error fetching feed from {url}: {e}")
 
