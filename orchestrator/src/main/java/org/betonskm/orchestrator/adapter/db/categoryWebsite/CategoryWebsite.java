@@ -29,18 +29,4 @@ public class CategoryWebsite {
 
   @EmbeddedId
   private CategoryWebsiteId id;
-
-  @MapsId("categoryId")
-  @ManyToOne(fetch = FetchType.LAZY)
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  @ColumnDefault("nextval('category_website_category_id_seq')")
-  @JoinColumn(name = "category_id", nullable = false)
-  private CategoryEntity category;
-
-  @MapsId("websiteId")
-  @ManyToOne(fetch = FetchType.LAZY)
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  @JoinColumn(name = "website_id", nullable = false)
-  private WebsiteEntity websiteEntity;
-
 }
