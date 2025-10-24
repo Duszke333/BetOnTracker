@@ -20,19 +20,17 @@ public class CategoryWebsiteRepositoryAdapter implements CategoryWebsiteReposito
   private final WebsiteMapper websiteMapper;
 
   @Override
-  public boolean link(Category category, Website website) {
-    CategoryWebsiteId id = new CategoryWebsiteId(category.getId(), website.getId());
+  public boolean link(Integer categoryId, UUID websiteId) {
+    CategoryWebsiteId id = new CategoryWebsiteId(categoryId, websiteId);
     if (categoryWebsiteEntityRepository.existsById(id)) {
-      log.info("Link between category {} and website {} already exists", category.getId(), website.getId());
+      log.info("Link between category {} and website {} already exists", categoryId, websiteId);
       return false;
     }
     CategoryWebsite link = CategoryWebsite.builder()
         .id(id)
-        .category(categoryMapper.toEntity(category))
-        .websiteEntity(websiteMapper.toEntity(website))
         .build();
     categoryWebsiteEntityRepository.save(link);
-    log.info("Linked category {} with website {}", category.getId(), website.getId());
+    log.info("Linked category {} with website {}", categoryId, websiteId);
     return true;
   }
 }
