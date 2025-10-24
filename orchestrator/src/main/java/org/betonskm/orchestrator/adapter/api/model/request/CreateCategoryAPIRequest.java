@@ -26,9 +26,9 @@ public class CreateCategoryAPIRequest {
 
   @Schema(
       requiredMode = RequiredMode.REQUIRED,
-      description = "Name of the feed associated with the category",
+      description = "Name of the category",
       example = "Tech News"
   )
   @NotBlank
-  private String feedName;
+  private String categoryName;
 }
