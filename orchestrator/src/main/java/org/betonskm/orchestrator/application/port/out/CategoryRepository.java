@@ -11,4 +11,6 @@ public interface CategoryRepository {
   List<Category> fetchAllActiveCategories();
 
   Optional<Category> fetchCategoryById(Integer id);
+
+  Optional<String> fetchCategoryNameById(Integer id);
 }
