@@ -75,20 +75,23 @@ public class CategoryManagementService implements CategoryManagementUseCase {
       throw new OrchestratorException("Category with ID " + command.getCategoryId() + " not found");
     }
 
-    Website savedWebsite;
     Optional<Website> optionalWebsite = websiteRepository.fetchByUrl(command.getWebsiteUrl());
     if (optionalWebsite.isPresent()) {
       Website website = optionalWebsite.get();
       log.info("[CATEGORY MANAGEMENT] Website with URL {} already exists: {}", command.getWebsiteUrl(), website);
+      if (categoryWebsiteRepository.link(command.getCategoryId(), website.getId())) {
+        log.info("[CATEGORY MANAGEMENT] Website with URL {} is already linked to category ID {}", command.getWebsiteUrl(), command.getCategoryId());
+        return website;
+      }
       website.incrementReferenceCount();
-      savedWebsite = websiteRepository.save(website);
-    } else {
-      Website website = Website.builder()
-          .url(command.getWebsiteUrl())
-          .build();
-      savedWebsite = websiteRepository.save(website);
-      log.info("[CATEGORY MANAGEMENT] Created new website: {}", savedWebsite);
+      return websiteRepository.save(website);
     }
+
+    Website website = Website.builder()
+        .url(command.getWebsiteUrl())
+        .build();
+    Website savedWebsite = websiteRepository.save(website);
+    log.info("[CATEGORY MANAGEMENT] Created new website: {}", savedWebsite);
 
     categoryWebsiteRepository.link(command.getCategoryId(), savedWebsite.getId());
     log.info("[CATEGORY MANAGEMENT] Added website to category: {}", savedWebsite);
