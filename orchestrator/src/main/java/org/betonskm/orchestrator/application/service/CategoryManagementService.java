@@ -1,5 +1,6 @@
 package org.betonskm.orchestrator.application.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.application.command.CreateCategoryCommand;
@@ -26,5 +27,10 @@ public class CategoryManagementService implements CategoryManagementUseCase {
     Category savedCategory = categoryRepository.save(category);
     log.info("[CATEGORY MANAGEMENT] Created new category: {}", savedCategory);
     return savedCategory;
+  }
+
+  @Override
+  public List<Category> fetchAllActiveCategories() {
+    return categoryRepository.fetchAllActiveCategories();
   }
 }
