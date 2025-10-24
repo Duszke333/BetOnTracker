@@ -1,25 +1,19 @@
 package org.betonskm.orchestrator.adapter.db.website;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.betonskm.orchestrator.adapter.db.category.CategoryEntity;
-import org.betonskm.orchestrator.adapter.db.categoryWebsite.CategoryWebsite;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -63,8 +57,4 @@ public class WebsiteEntity {
   @ColumnDefault("1")
   @Column(name = "reference_count", nullable = false)
   private Integer referenceCount;
-
-  @OneToMany(mappedBy = "website", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<CategoryWebsite> categories = new HashSet<>();
-
 }
