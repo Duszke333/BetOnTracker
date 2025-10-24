@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Feed Management", description = "Controller for managing feeds")
-public class FeedManagementController {
+@Tag(name = "Category Management", description = "Controller for managing categories")
+public class CategoryManagementController {
 
   private static final String CREATE_CATEGORY_PATH = FEED_MANAGEMENT_PREFIX + "/categories/create";
   private static final String FETCH_CATEGORIES_PATH = FEED_MANAGEMENT_PREFIX + "/categories/fetch";
