@@ -17,7 +17,7 @@ public class CreateCategoryAPIRequest {
 
   @Schema(
       requiredMode = RequiredMode.REQUIRED,
-      description = "Name of the category",
+      description = "Name of the category (must be unique)",
       example = "Tech News"
   )
   @NotBlank
