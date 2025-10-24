@@ -14,6 +14,7 @@ import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.awscore.client.builder.AwsClientBuilder;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
 @Slf4j
@@ -32,11 +33,30 @@ public class AmazonConfiguration {
         .build();
   }
 
+  @Bean
+  public SnsClient snsClient() {
+    return apply(amazonProperties.getSns().getEndpoint(), SnsClient.builder())
+        .region(Region.of(amazonProperties.getSns().getRegion()))
+        .credentialsProvider(buildSnsCredentialsProvider())
+        .build();
+  }
+
   private AwsCredentialsProvider buildSqsCredentialsProvider() {
     if (allNotNull(amazonProperties.getSqs().getAccessKeyId(), amazonProperties.getSqs().getSecretKey())) {
       return () -> AwsBasicCredentials.create(
           amazonProperties.getSqs().getAccessKeyId(),
           amazonProperties.getSqs().getSecretKey()
+      );
+    } else {
+      return DefaultCredentialsProvider.create();
+    }
+  }
+
+  private AwsCredentialsProvider buildSnsCredentialsProvider() {
+    if (allNotNull(amazonProperties.getSns().getAccessKeyId(), amazonProperties.getSns().getSecretKey())) {
+      return () -> AwsBasicCredentials.create(
+          amazonProperties.getSns().getAccessKeyId(),
+          amazonProperties.getSns().getSecretKey()
       );
     } else {
       return DefaultCredentialsProvider.create();
