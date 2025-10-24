@@ -10,6 +10,60 @@ from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from io import BytesIO
 from datetime import datetime
+from playwright.sync_api import sync_playwright
+
+def get_page_content(url):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto(url)
+        content = page.evaluate('''() => {
+            // Try multiple strategies to find the article content
+            let container = null;
+            
+            // Strategy 1: Look for <article> tag
+            container = document.querySelector('article');
+            
+            // Strategy 2: Look for common article-related classes/ids
+            if (!container) {
+                const selectors = [
+                    '[class*="article"]',
+                    '[id*="article"]',
+                    '[class*="content"]',
+                    '[id*="content"]',
+                    '[class*="post"]',
+                    '[id*="post"]',
+                    'main',
+                    '[role="main"]'
+                ];
+                
+                for (const selector of selectors) {
+                    container = document.querySelector(selector);
+                    if (container) break;
+                }
+            }
+            
+            // Strategy 3: Fallback to body if nothing found
+            if (!container) {
+                container = document.body;
+            }
+            
+            const elements = container.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
+            return Array.from(elements)
+                .filter(el => {
+                    const style = window.getComputedStyle(el);
+                    const isVisible = style.display !== 'none' && 
+                                     style.visibility !== 'hidden' &&
+                                     style.opacity !== '0';
+                    return isVisible;
+                })
+                .map(el => el.innerText.trim())
+                .filter(text => text.length > 0)
+                .join('\\n\\n');
+        }''')
+        
+        browser.close()
+        return content
 
 def parse_feed(url, etag=None, modified=None):
     logging.info(f"Feed parsing requested for URL: {url}")
@@ -19,11 +73,14 @@ def parse_feed(url, etag=None, modified=None):
     if feed.entries:
         parsed_entries = []
         for entry in feed.entries:
+            content = get_page_content(entry.link)
+            logging.info(f"Fetched content for entry: {entry.link}")
             parsed_entries.append({
                 'title': entry.title,
                 'link': entry.link,
                 'description': entry.description,
-                'date': entry.published_parsed
+                'date': entry.published_parsed,
+                'content': content
             })
         logging.info(f"Parsed {len(parsed_entries)} entries from the feed.")
         return parsed_entries, feed.get('etag'), feed.get('modified_parsed')
@@ -43,14 +100,14 @@ def upload_to_s3(content, object_name):
 
     s3_client = session.client(
         service_name='s3',
-        region_name='fr-par',
+        region_name='pl-waw',
         use_ssl=True,
-        endpoint_url='https://hackathon-team-5.s3.fr-par.scw.cloud',
+        endpoint_url='https://hackathon-team-5-pl.s3.pl-waw.scw.cloud',
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     )
 
-    bucket_name = 'hackathon-team-5'
+    bucket_name = 'hackathon-team-5-pl'
     fields = {
             "acl": "private",
             "Cache-Control": "nocache",
