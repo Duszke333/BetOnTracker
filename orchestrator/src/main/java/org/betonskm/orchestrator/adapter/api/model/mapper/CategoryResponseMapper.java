@@ -1,6 +1,8 @@
 package org.betonskm.orchestrator.adapter.api.model.mapper;
 
+import java.util.List;
 import org.betonskm.orchestrator.adapter.api.model.response.CategoryAPIResponse;
+import org.betonskm.orchestrator.adapter.api.model.response.FetchAllCategoriesAPIResponse;
 import org.betonskm.orchestrator.configuration.MapperConfiguration;
 import org.betonskm.orchestrator.domain.category.Category;
 import org.mapstruct.Mapper;
@@ -12,4 +14,10 @@ public interface CategoryResponseMapper {
   @Mapping(target = "categoryId", source = "id")
   @Mapping(target = "categoryName", source = "name")
   CategoryAPIResponse toAPIResponse(Category category);
+
+  List<CategoryAPIResponse> toAPIResponseList(List<Category> categories);
+
+  default FetchAllCategoriesAPIResponse toFetchAllAPIResponse(List<Category> categories) {
+    return new FetchAllCategoriesAPIResponse(toAPIResponseList(categories));
+  }
 }
