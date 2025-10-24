@@ -5,6 +5,8 @@ import uuid
 import requests
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
+from botocore.auth import SigV4Auth
+from botocore.awsrequest import AWSRequest
 
 load_dotenv()
 
@@ -13,21 +15,36 @@ AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY') or ''
 
 bucket_name = 'hackathon-team-5'
 object_name = 'test.txt'
-# Generate a presigned URL for the object
-session = boto3.session.Session()
+# Scaleway S3-compatible endpoint
+REGION = 'fr-par'  # or your preferred region: nl-ams, pl-waw
+endpoint_url = f'https://s3.{REGION}.scw.cloud'
 
-s3_client = session.client(
-    service_name='s3',
-    region_name='fr-par',
-    use_ssl=True,
-    endpoint_url='https://hackathon-team-5.s3.fr-par.scw.cloud',
+# Generate the download URL
+url = f'{endpoint_url}/{bucket_name}/{object_name}'
+
+# Download the file using requests with AWS Signature Version 4
+
+# Prepare the request
+request = AWSRequest(method='GET', url=url)
+
+# Sign the request
+credentials = boto3.Session(
     aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-)
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+).get_credentials()
 
+SigV4Auth(credentials, 's3', REGION).add_auth(request)
 
-print("Downloading file using presigned URL...")
-with open('downloaded_test_file.txt', 'wb') as f:
-    s3_client.download_fileobj(bucket_name, object_name, f)
+request.headers['X-Amz-Content-Sha256'] = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'  # SHA256 hash of an empty string
 
-print("File downloaded as 'downloaded_test_file.txt'")
+# Make the request
+response = requests.get(url, headers=dict(request.headers))
+
+if response.status_code == 200:
+    # Save the file
+    output_filename = f'downloaded_{object_name}'
+    with open(output_filename, 'wb') as f:
+        f.write(response.content)
+    print(f'File downloaded successfully: {output_filename}')
+else:
+    print(f'Error downloading file: {response.status_code} - {response.text}')
