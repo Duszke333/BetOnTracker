@@ -16,7 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Category {
 
-  private Long id;
+  private Integer id;
   private String name;
   private OffsetDateTime createdAt;
   private OffsetDateTime decommissionedAt;

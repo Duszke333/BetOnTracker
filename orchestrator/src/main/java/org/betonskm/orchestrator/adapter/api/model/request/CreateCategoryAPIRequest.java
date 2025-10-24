@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.betonskm.orchestrator.adapter.api.model.validation.ValidUUID;
 
 @Getter
 @ToString
