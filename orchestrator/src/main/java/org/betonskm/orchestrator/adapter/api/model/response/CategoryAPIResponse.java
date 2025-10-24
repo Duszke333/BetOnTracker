@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCategoryAPIResponse {
+public class CategoryAPIResponse {
 
   @Schema(
       requiredMode = RequiredMode.REQUIRED,
