@@ -92,6 +92,9 @@ public class CategoryManagementController {
   }
 
   @PostMapping(path = ADD_WEBSITE_TO_FEED_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+  @DefaultApiSecurity
+  @Operation(summary = "Add a website to category")
+  @ApiResponse(responseCode = "200", description = "Feed category deleted successfully")
   public WebsiteAPIResponse addWebsiteToFeed(
       @Parameter(description = "ID of the category to which the website will be added", required = true, example = "1")
       @PathVariable("categoryId") @Positive Integer categoryId,
