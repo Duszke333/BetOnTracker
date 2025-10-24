@@ -1,18 +1,23 @@
 package org.betonskm.orchestrator.adapter.db.category;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.betonskm.orchestrator.adapter.db.categoryWebsite.CategoryWebsite;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -39,4 +44,7 @@ public class CategoryEntity {
 
   @Column(name = "decommissioned_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
   private OffsetDateTime decommissionedAt;
+
+  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<CategoryWebsite> websites = new HashSet<>();
 }
