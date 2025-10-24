@@ -1,5 +1,6 @@
 import text from "@/assets/wiadomosci_ztm_rss.xml?raw";
 import RssFeed from "./components/RssFeed.tsx";
+import TopBar from "./components/TopBar.tsx";
 
 export default function App() {
   const parser = new DOMParser();
@@ -22,5 +23,10 @@ export default function App() {
     return <div>Error page here</div>;
   }
 
-  return <RssFeed title={title} description={description} items={items} />;
+  return (
+    <div className="dark:bg-zinc-900 dark:text-white">
+      <TopBar title={title} />
+      <RssFeed title={title} description={description} items={items} />
+    </div>
+  );
 }
