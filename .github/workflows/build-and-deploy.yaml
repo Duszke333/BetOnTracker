@@ -1,4 +1,4 @@
-name: Deploy to Scaleway
+name: Build & Deploy to Scaleway
 
 on:
   workflow_dispatch:
@@ -13,6 +13,25 @@ env:
   FUNCTION_ID: "778934ba-6e58-4430-b684-a3a1a2b66827"
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Login to Scaleway Container Registry
+      uses: docker/login-action@v3
+      with:
+        username: nologin
+        password: ${{ secrets.SCALEWAY_API_KEY }}
+        registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
+    - name: Build frontend image
+      run: cd frontend && docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-frontend:latest
+    - name: Push the frontend Docker Image
+      run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-frontend:latest
+    - name: Build orchestrator image
+      run: cd orchestrator && docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-orchestrator:latest
+    - name: Push the orchestrator Docker Image
+      run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-orchestrator:latest
+
   deploy-orchestrator-container:
     runs-on: ubuntu-latest
     steps:
