@@ -23,4 +23,14 @@ public class Website {
   private OffsetDateTime createdAt;
   private OffsetDateTime lastFetchedAt;
   private Integer referenceCount;
+
+  public void incrementReferenceCount() {
+    this.referenceCount++;
+  }
+
+  public void decrementReferenceCount() {
+    if (this.referenceCount > 0) {
+      this.referenceCount--;
+    }
+  }
 }
