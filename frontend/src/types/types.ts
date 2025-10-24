@@ -1,14 +1,9 @@
-export interface RssTag {
-  id: string;
-  name: string;
-}
-
 export interface RssItem {
   id: string;
   title: string;
   link: string;
   description: string;
-  tags: RssTag[];
+  tags: string[];
   pubDate: Date;
 }
 

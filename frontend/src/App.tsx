@@ -15,10 +15,7 @@ export default function App() {
       title: item.querySelector("title")?.textContent ?? "",
       link: item.querySelector("link")?.textContent ?? "",
       description: item.querySelector("description")?.textContent ?? "",
-      tags: Array.from(item.querySelectorAll("tag")).map((tag) => ({
-        id: crypto.randomUUID(),
-        name: tag.textContent,
-      })),
+      tags: [...new Set(Array.from(item.querySelectorAll("tag")).map((tag) => tag.textContent))],
       pubDate: new Date(item.querySelector("pubDate")?.textContent ?? ""),
     }),
   );

@@ -14,15 +14,15 @@ export default function Item({
   setSelectedTag: (category: string | null) => void;
 }) {
   return (
-    <div className="mt-4 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg max-w-3xl w-full shadow-md">
+    <div className="mt-4 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg max-w-4xl w-full shadow-md">
       <div className="flex flex-row items-center">
         <a href={link} target="_blank" rel="noopener noreferrer">
           <h2 className="text-xl font-bold hover:underline">{title}</h2>
         </a>
         {tags.map((tag) => (
           <Tag
-            key={tag.id}
-            {...tag}
+            key={tag}
+            name={tag}
             selectedTag={selectedTag}
             setSelectedTag={setSelectedTag}
           />

@@ -7,9 +7,7 @@ export default function Feed({ description, items }: RssChannel) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const tags = useMemo(
-    () => [
-      ...new Set(items.flatMap((item) => item.tags.map((tag) => tag.name))),
-    ],
+    () => [ ...new Set(items.flatMap((item) => item.tags)) ],
     [items],
   );
 
@@ -29,7 +27,7 @@ export default function Feed({ description, items }: RssChannel) {
       {items
         .filter(
           (item) =>
-            !selectedTag || item.tags.some((tag) => tag.name === selectedTag),
+            !selectedTag || item.tags.includes(selectedTag),
         )
         .map((item: RssItem) => (
           <Item
