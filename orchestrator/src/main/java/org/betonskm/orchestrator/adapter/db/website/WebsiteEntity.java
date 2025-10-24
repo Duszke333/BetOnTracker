@@ -37,10 +37,6 @@ public class WebsiteEntity {
   @Column(name = "url", nullable = false, length = 2048)
   private String url;
 
-  @Size(max = 1024)
-  @Column(name = "title", length = 1024)
-  private String title;
-
   @Size(max = 512)
   @Column(name = "etag", length = 512)
   private String etag;

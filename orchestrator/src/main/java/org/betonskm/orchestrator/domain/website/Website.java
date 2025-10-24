@@ -19,7 +19,6 @@ public class Website {
 
   private UUID id;
   private String url;
-  private String title;
   private String etag;
   private OffsetDateTime createdAt;
   private OffsetDateTime lastFetchedAt;
