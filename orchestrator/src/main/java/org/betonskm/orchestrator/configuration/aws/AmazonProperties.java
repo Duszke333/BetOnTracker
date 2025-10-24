@@ -14,7 +14,7 @@ public class AmazonProperties {
 
   private final String accessKeyId;
   private final String secretKey;
-  private AmazonSqsProperties sqs;
+  private final AmazonSqsProperties sqs;
 
   @Getter
   @Setter
