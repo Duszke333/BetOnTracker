@@ -52,7 +52,7 @@ jobs:
             -d '{
               "name": "orchestrator",
               "namespace_id": "$CONTAINER_NAMESPACE_ID",
-              "registry_image": "betontracker-orchestrator:latest",
+              "registry_image": "betontracker-orchestrator:latest"
             }'
 
   deploy-frontend-container:
@@ -71,7 +71,7 @@ jobs:
             -d '{
               "name": "frontend",
               "namespace_id": "$CONTAINER_NAMESPACE_ID",
-              "registry_image": "betontracker-frontend:latest",
+              "registry_image": "betontracker-frontend:latest"
             }'
 
   deploy-function:
