@@ -25,17 +25,17 @@ s3_client = session.client(
 )
 
 bucket_name = 'hackathon-team-5'
-object_name = f'presigned-upload-{str(uuid.uuid4())}.txt'
+object_name = f'test.txt'
 fields = {
         "acl": "private",
         "Cache-Control": "nocache",
-        "Content-Type": "image/jpeg"
+        "Content-Type": "text/plain"
     }
 conditions = [
     {"key": object_name},
     {"acl": "private"},
     {"Cache-Control": "nocache"},
-    {"Content-Type": "image/jpeg"}
+    {"Content-Type": "text/plain"}
 ]
 expiration = 120 # Max two minutes to start upload
 
