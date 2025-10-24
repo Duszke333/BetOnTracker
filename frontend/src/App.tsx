@@ -1,5 +1,5 @@
 import text from "@/assets/wiadomosci_ztm_rss.xml?raw";
-import RssFeed from "./components/RssFeed.tsx";
+import Feed from "./components/Feed.tsx";
 import TopBar from "./components/TopBar.tsx";
 
 export default function App() {
@@ -15,6 +15,7 @@ export default function App() {
       title: item.querySelector("title")?.textContent ?? "",
       link: item.querySelector("link")?.textContent ?? "",
       description: item.querySelector("description")?.textContent ?? "",
+      tags: [...new Set(Array.from(item.querySelectorAll("tag")).map((tag) => tag.textContent))],
       pubDate: new Date(item.querySelector("pubDate")?.textContent ?? ""),
     }),
   );
@@ -24,9 +25,9 @@ export default function App() {
   }
 
   return (
-    <div className="dark:bg-zinc-900 dark:text-white">
+    <>
       <TopBar title={title} />
-      <RssFeed title={title} description={description} items={items} />
-    </div>
+      <Feed title={title} description={description} items={items} />
+    </>
   );
 }

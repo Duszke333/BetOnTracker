@@ -20,7 +20,7 @@ export default function TopBar({ title }: { title: string }) {
   }, [theme]);
 
   return (
-    <div className="flex justify-between items-center p-4">
+    <div className="p-4 flex justify-between items-center">
       <h1 className="text-2xl font-bold text-[#AA4344]">{title}</h1>
       <button
         type={"button"}
