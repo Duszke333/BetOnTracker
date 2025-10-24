@@ -28,15 +28,15 @@ public class AmazonConfiguration {
   public SqsAsyncClient sqsAsyncClient() {
     return apply(amazonProperties.getSqs().getEndpoint(), SqsAsyncClient.builder())
         .region(Region.of(amazonProperties.getSqs().getRegion()))
-        .credentialsProvider(buildCredentialsProvider())
+        .credentialsProvider(buildSqsCredentialsProvider())
         .build();
   }
 
-  private AwsCredentialsProvider buildCredentialsProvider() {
-    if (allNotNull(amazonProperties.getAccessKeyId(), amazonProperties.getSecretKey())) {
+  private AwsCredentialsProvider buildSqsCredentialsProvider() {
+    if (allNotNull(amazonProperties.getSqs().getAccessKeyId(), amazonProperties.getSqs().getSecretKey())) {
       return () -> AwsBasicCredentials.create(
-          amazonProperties.getAccessKeyId(),
-          amazonProperties.getSecretKey()
+          amazonProperties.getSqs().getAccessKeyId(),
+          amazonProperties.getSqs().getSecretKey()
       );
     } else {
       return DefaultCredentialsProvider.create();
