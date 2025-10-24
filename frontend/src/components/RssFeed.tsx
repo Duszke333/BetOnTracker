@@ -1,44 +1,17 @@
-import text from "@/assets/wiadomosci_ztm_rss.xml?raw";
+import type { Channel, Item } from "../types/types.ts";
+import RssItem from "./RssItem.tsx";
 
-export default function RssFeed() {
-  const parser = new DOMParser();
-  const xml = parser.parseFromString(text, "application/xml");
-
-  const title = xml.querySelector("channel > title");
-  const description = xml.querySelector("channel > description");
-  const items = Array.from(xml.querySelectorAll("channel > item")).map(
-    (item) => ({
-      id: crypto.randomUUID(),
-      title: item.querySelector("title")?.textContent,
-      link: item.querySelector("link")?.textContent,
-      description: item.querySelector("description")?.textContent,
-      pubDate: item.querySelector("pubDate")?.textContent,
-    }),
-  );
-
+export default function RssFeed({ title, description, items }: Channel) {
   return (
-    <>
-      <h1>{title?.textContent}</h1>
-      <p>{description?.textContent}</p>
-      <p>Artykuły:</p>
-      {items.map((item) => {
-        return (
-          <div key={item.id}>
-            <h2>{item.title}</h2>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <a href={item.link}>🔗</a>
-              <p>{item.pubDate}</p>
-            </div>
-            <p>{item.description}</p>
-          </div>
-        );
-      })}
-    </>
+    <div className="p-4 bg-zinc-200">
+      <h1 className="text-2xl font-bold text-[#AA4344] text-center">{title}</h1>
+      <p className="text-lg text-center">{description}</p>
+      <p className="text-lg mt-4 text-center">Artykuły:</p>
+      <div className="flex flex-col items-center">
+        {items.map((item: Item) => (
+          <RssItem key={item.id} {...item} />
+        ))}
+      </div>
+    </div>
   );
 }
