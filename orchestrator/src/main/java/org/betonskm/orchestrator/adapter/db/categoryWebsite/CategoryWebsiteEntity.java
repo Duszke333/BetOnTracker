@@ -25,10 +25,10 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "category_website")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryWebsite {
+public class CategoryWebsiteEntity {
 
   @EmbeddedId
-  private CategoryWebsiteId id;
+  private CategoryWebsiteEntityId id;
 
   @MapsId("categoryId")
   @ManyToOne(fetch = FetchType.LAZY)
