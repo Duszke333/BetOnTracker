@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.betonskm.orchestrator.adapter.event.listener.news.model.NewsArticleEvent;
 
 @Getter
 @Setter
@@ -32,5 +33,10 @@ public class Website {
     if (this.referenceCount > 0) {
       this.referenceCount--;
     }
+  }
+
+  public void update(NewsArticleEvent event) {
+    this.etag = event.getEtag();
+    this.lastFetchedAt = event.getFetchedAt();
   }
 }
