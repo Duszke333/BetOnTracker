@@ -2,6 +2,10 @@ name: Build & Deploy to Scaleway
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - infra
 
 env:
   SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
@@ -34,6 +38,7 @@ jobs:
 
   deploy-orchestrator-container:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -52,6 +57,7 @@ jobs:
 
   deploy-frontend-container:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
