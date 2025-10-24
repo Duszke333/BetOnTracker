@@ -17,15 +17,6 @@ public class CreateCategoryAPIRequest {
 
   @Schema(
       requiredMode = RequiredMode.REQUIRED,
-      description = "ID of the user owning the category",
-      example = "df884722-eef6-4601-9313-2d5d8e4524b7"
-  )
-  @NotBlank
-  @ValidUUID
-  private String userId;
-
-  @Schema(
-      requiredMode = RequiredMode.REQUIRED,
       description = "Name of the category",
       example = "Tech News"
   )

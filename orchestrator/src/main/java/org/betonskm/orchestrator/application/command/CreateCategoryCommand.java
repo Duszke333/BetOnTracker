@@ -15,12 +15,10 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CreateCategoryCommand {
 
-  private String userId;
   private String categoryName;
 
-  public static CreateCategoryCommand from(String userId, String categoryName) {
+  public static CreateCategoryCommand from(String categoryName) {
     return CreateCategoryCommand.builder()
-        .userId(userId)
         .categoryName(categoryName)
         .build();
   }
