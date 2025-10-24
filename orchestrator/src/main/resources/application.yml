@@ -27,3 +27,11 @@ spring:
       default_schema: public
       jdbc:
         time_zone: UTC
+
+aws:
+  sqs:
+    endpoint: ${AWS_SQS_ENDPOINT:}
+    region: ${AWS_SQS_REGION:eu-central-1}
+    news-articles-queue-url: ${NEWS_ARTICLES_SQS_URL:http://localhost:4566/000000000000/news-articles-queue}
+  access-key-id: ${AWS_ACCESS_KEY_ID:accesskey}
+  secret-key: ${AWS_SECRET_ACCESS_KEY:secretkey}
