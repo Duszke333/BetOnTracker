@@ -50,6 +50,10 @@ dependencies {
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
+    // AWS
+    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:${springCloudAwsVersion}")
+    implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
+
     // utilities
     implementation "com.google.guava:guava:${guavaVersion}"
     implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
