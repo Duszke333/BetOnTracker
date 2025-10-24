@@ -8,7 +8,7 @@ on:
       - infra
 
 env:
-  SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+  SCW_SECRET_KEY: "47bc2d6b-0c9c-4a49-8b88-d0ae69f42def"
   SCW_DEFAULT_REGION: pl-waw
   CONTAINER_NAMESPACE_ID: "8ffb2ab0-b5d1-4b41-a516-fb3ff93c46ea"
   ORCHESTRATOR_CONTAINER_ID: "9dfc5571-df8f-469b-8c3e-c869fe4660cb"
@@ -47,7 +47,7 @@ jobs:
 
       - name: Deploy Orchestrator Serverless Container
         run: |
-          export CONTAINER_ID = $(curl -X POST \
+          export CONTAINER_ID=$(curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
             "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
@@ -71,7 +71,7 @@ jobs:
 
       - name: Deploy Frontend Serverless Container
         run: |
-          export CONTAINER_ID = $(curl -X POST \
+          export CONTAINER_ID=$(curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
             -H "Content-Type: application/json" \
             "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
