@@ -1,0 +1,4 @@
+feedparser>=2.32
+dotenv>=0.9
+boto3>=1.40
+requests>=2.32
