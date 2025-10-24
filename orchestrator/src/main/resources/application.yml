@@ -27,3 +27,29 @@ spring:
       default_schema: public
       jdbc:
         time_zone: UTC
+
+aws:
+  sqs:
+    endpoint: ${AWS_SQS_ENDPOINT:https://sqs.mnq.fr-par.scaleway.com}
+    region: ${AWS_SQS_REGION:fr-par}
+    news-articles-queue-url: ${NEWS_ARTICLES_SQS_URL:https://sqs.mnq.fr-par.scaleway.com/000000000000/news-articles-queue}
+  access-key-id: ${SQS_ADMIN_ACCESS_KEY_ID:accessKey123}
+  secret-key: ${SQS_ADMIN_SECRET_KEY:secretKey123}
+
+app:
+  scheduling:
+    max-concurrent-tasks: 20
+    publish-event:
+      scheduler-enabled: true # whether to enable the scheduler
+      attempt-frequency: 1M # how often to try to re-send events
+      block-after-attempts: 15 # how many failed attempts before blocking further attempts
+      flush-batch-size: 4096 # how many events to process in a single batch
+      fixed-delay: 15m # delay between scheduler runs
+      table-name: txno_outbox
+    inbox-event:
+      scheduler-enabled: true # whether to enable the scheduler
+      attempt-frequency: 1M # how often to try to re-send events
+      block-after-attempts: 15 # how many failed attempts before blocking further attempts
+      flush-batch-size: 4096 # how many events to process in a single batch
+      fixed-delay: 15m # delay between scheduler runs
+      table-name: txno_inbox
