@@ -55,7 +55,7 @@ jobs:
               "name": "orchestrator",
               "namespace_id": "$CONTAINER_NAMESPACE_ID",
               "registry_image": "$ORCHESTRATOR_IMAGE_NAME"
-            }' | jq -r ".container.id")
+            }' | jq -r ."id")
 
           curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
@@ -79,7 +79,7 @@ jobs:
               "name": "frontend",
               "namespace_id": "$CONTAINER_NAMESPACE_ID",
               "registry_image": "$FRONTEND_IMAGE_NAME"
-            }' | jq -r ".container.id")
+            }' | jq -r ."id")
 
           curl -X POST \
             -H "X-Auth-Token: $SCW_SECRET_KEY" \
