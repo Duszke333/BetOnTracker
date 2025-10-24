@@ -3,6 +3,8 @@ package org.betonskm.orchestrator.application.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.adapter.event.listener.news.model.NewsArticleEvent;
+import org.betonskm.orchestrator.adapter.event.publisher.rawArticles.RawArticlesPublisher;
+import org.betonskm.orchestrator.application.command.PublishRawArticleCommand;
 import org.betonskm.orchestrator.application.port.in.ArticleManagementUseCase;
 import org.betonskm.orchestrator.application.port.out.ArticleRepository;
 import org.betonskm.orchestrator.application.port.out.CategoryRepository;
@@ -23,6 +25,7 @@ public class ArticleManagementService implements ArticleManagementUseCase {
   private final ArticleRepository articleRepository;
   private final CategoryRepository categoryRepository;
   private final CategoryWebsiteRepository categoryWebsiteRepository;
+  private final RawArticlesPublisher publisher;
 
   @Override
   @Transactional
@@ -47,8 +50,10 @@ public class ArticleManagementService implements ArticleManagementUseCase {
     Article savedArticle = articleRepository.save(article);
 
     log.info("Article created with id: {} for category id: {}", savedArticle.getId(), categoryId);
-//
-//    String categoryName = categoryRepository.fetchCategoryNameById(categoryId)
-//        .orElseThrow(() -> new OrchestratorException("Category not found with id: " + categoryId));
+
+    String categoryName = categoryRepository.fetchCategoryNameById(categoryId)
+        .orElseThrow(() -> new OrchestratorException("Category not found with id: " + categoryId));
+
+    publisher.publishEvent(PublishRawArticleCommand.from(savedArticle, categoryName));
   }
 }
