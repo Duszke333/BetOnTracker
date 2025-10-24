@@ -14,6 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AmazonProperties {
 
   private AmazonSqsProperties sqs;
+  private AmazonSnsProperties sns;
 
   @Getter
   @Setter
@@ -25,5 +26,17 @@ public class AmazonProperties {
     private String endpoint;
     private String region;
     private String newsArticlesQueueUrl;
+  }
+
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  public static class AmazonSnsProperties {
+
+    private String accessKeyId;
+    private String secretKey;
+    private String endpoint;
+    private String region;
+    private String summarizeArticlesTopicArn;
   }
 }
