@@ -1,0 +1,1 @@
+b'<Error><Code>AccessDenied</Code><Message>Invalid according to Policy: Policy Condition failed: {&#34;bucket&#34;: &#34;hackathon-team-5-pl&#34;}</Message><RequestId>txg63e7c3018de145d392ba-0068fb926f</RequestId><HostId>txg63e7c3018de145d392ba-0068fb926f</HostId><Resource>/hackathon-team-5/presigned-upload-7d05ad66-4f88-4ff4-8c79-d433a9d8cd19.txt</Resource></Error>'
