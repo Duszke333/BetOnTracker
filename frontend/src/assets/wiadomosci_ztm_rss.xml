@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns:slash="http://purl.org/rss/1.0/modules/slash/">
+  <channel>
+    <title>Wiadomości ztm.gda.pl</title>
+    <description>najnowsze wiadomości z oficjalnej strony Zarządu Transportu Miejskiego w Gdańsku
+      RSS
+    </description>
+    <link>https://ztm.gda.pl/wiadomosci</link>
+    <image>
+      <url>https://ztm.gda.pl/images/winieta-logo.png</url>
+      <title>Wiadomości ztm.gda.pl</title>
+      <link>https://ztm.gda.pl/wiadomosci</link>
+    </image>
+    <language>pl</language>
+    <sy:updatePeriod>hourly</sy:updatePeriod>
+    <sy:updateFrequency>1</sy:updateFrequency>
+    <atom:link href="https://www.gdansk.pl/subpages/rss/wiadomosci_ztm_rss.xml" rel="self"
+      type="application/rss+xml"/>
+    <item>
+      <title>Punkt informacyjny dla mieszkańców Zaspy</title>
+      <link>https://ztm.gda.pl/wiadomosci/punkt-informacyjny-dla-mieszkancow-zaspy,a,11109</link>
+      <guid>https://ztm.gda.pl/wiadomosci/punkt-informacyjny-dla-mieszkancow-zaspy,a,11109</guid>
+      <description>
+        <![CDATA[W związku z planowaną rozbiórką kładki nad al. Rzeczypospolitej na gdańskiej Zaspie, uruchomione zostaną specjalne punkty informacyjne dla mieszkańców.]]></description>
+      <content:encoded>
+        <![CDATA[W związku z planowaną rozbiórką kładki nad al. Rzeczypospolitej na gdańskiej Zaspie, uruchomione zostaną specjalne punkty informacyjne dla mieszkańców.]]></content:encoded>
+      <pubDate>Tue, 21 Oct 2025 09:44:49 +0200</pubDate>
+    </item>
+    <item>
+      <title>Konkurs #ZTMwkadrze</title>
+      <link>https://ztm.gda.pl/wiadomosci/konkurs-ztmwkadrze,a,11100</link>
+      <guid>https://ztm.gda.pl/wiadomosci/konkurs-ztmwkadrze,a,11100</guid>
+      <description>
+        <![CDATA[Codziennie mijamy się w tramwajach, autobusach i na przystankach. Razem tworzymy historię miasta, która toczy się w rytmie komunikacji miejskiej. Teraz masz szansę, by to właśnie Twój kadr stał się częścią tej opowieści i trafił do kalendarza ZTM na rok 2026.]]></description>
+      <content:encoded>
+        <![CDATA[Codziennie mijamy się w tramwajach, autobusach i na przystankach. Razem tworzymy historię miasta, która toczy się w rytmie komunikacji miejskiej. Teraz masz szansę, by to właśnie Twój kadr stał się częścią tej opowieści i trafił do kalendarza ZTM na rok 2026.]]></content:encoded>
+      <pubDate>Thu, 16 Oct 2025 09:15:40 +0200</pubDate>
+    </item>
+    <item>
+      <title>Nowoczesna flota autobusowa już wkrótce na ulicach Gdańska</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/nowoczesna-flota-autobusowa-juz-wkrotce-na-ulicach-gdanska,a,11090
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/nowoczesna-flota-autobusowa-juz-wkrotce-na-ulicach-gdanska,a,11090
+      </guid>
+      <description>
+        <![CDATA[Pierwsze autobusy wyprodukowane dla Gdańska przez firmę MAN są już gotowe. Delegacja, z udziałem wiceprezydenta Piotra Borawskiego, odwiedziła fabrykę w Starachowicach, aby zobaczyć pojazdy, które od stycznia 2026 roku będą wozić pasażerów w ramach nowej umowy z firmą Relobus.]]></description>
+      <content:encoded>
+        <![CDATA[Pierwsze autobusy wyprodukowane dla Gdańska przez firmę MAN są już gotowe. Delegacja, z udziałem wiceprezydenta Piotra Borawskiego, odwiedziła fabrykę w Starachowicach, aby zobaczyć pojazdy, które od stycznia 2026 roku będą wozić pasażerów w ramach nowej umowy z firmą Relobus.]]></content:encoded>
+      <pubDate>Mon, 13 Oct 2025 21:06:17 +0200</pubDate>
+    </item>
+    <item>
+      <title>25 nowych stacji Mevo dzięki głosom mieszkańców</title>
+      <link>https://ztm.gda.pl/wiadomosci/25-nowych-stacji-mevo-dzieki-glosom-mieszkancow,a,11086
+      </link>
+      <guid>https://ztm.gda.pl/wiadomosci/25-nowych-stacji-mevo-dzieki-glosom-mieszkancow,a,11086
+      </guid>
+      <description>
+        <![CDATA[Blisko cztery tysiące mieszkanek i mieszkańców Gdańska zdecydowało, gdzie powstaną kolejne stacje systemu roweru metropolitalnego MEVO. W konsultacjach, które trwały od 22 września do 5 października, oddano łącznie 3952 głosy. Spośród 50 zaproponowanych lokalizacji wybrano 25 miejsc, w których wkrótce pojawią się nowe stacje.]]></description>
+      <content:encoded>
+        <![CDATA[Blisko cztery tysiące mieszkanek i mieszkańców Gdańska zdecydowało, gdzie powstaną kolejne stacje systemu roweru metropolitalnego MEVO. W konsultacjach, które trwały od 22 września do 5 października, oddano łącznie 3952 głosy. Spośród 50 zaproponowanych lokalizacji wybrano 25 miejsc, w których wkrótce pojawią się nowe stacje.]]></content:encoded>
+      <pubDate>Fri, 10 Oct 2025 10:10:48 +0200</pubDate>
+    </item>
+    <item>
+      <title>Kolejne funkcje mapy „Tram &amp; Bus Online”</title>
+      <link>https://ztm.gda.pl/wiadomosci/kolejne-funkcje-mapy-tram-bus-online,a,11080</link>
+      <guid>https://ztm.gda.pl/wiadomosci/kolejne-funkcje-mapy-tram-bus-online,a,11080</guid>
+      <description>
+        <![CDATA[Mapa Zarządu Transportu Miejskiego w Gdańsku stale zyskuje nowe funkcjonalności, które mają ułatwić pasażerom śledzenie pojazdów i informowanie o wszelkich zmianach w komunikacji miejskiej.]]></description>
+      <content:encoded>
+        <![CDATA[Mapa Zarządu Transportu Miejskiego w Gdańsku stale zyskuje nowe funkcjonalności, które mają ułatwić pasażerom śledzenie pojazdów i informowanie o wszelkich zmianach w komunikacji miejskiej.]]></content:encoded>
+      <pubDate>Tue, 07 Oct 2025 11:04:55 +0200</pubDate>
+    </item>
+    <item>
+      <title>Forum Organizatorów Transportu w Gdańsku</title>
+      <link>https://ztm.gda.pl/wiadomosci/forum-organizatorow-transportu-w-gdansku,a,11070</link>
+      <guid>https://ztm.gda.pl/wiadomosci/forum-organizatorow-transportu-w-gdansku,a,11070</guid>
+      <description>
+        <![CDATA[Zarząd Transportu Miejskiego w Gdańsku był gospodarzem dwudniowego spotkania Forum Organizatorów Transportu, które odbyło się w dniach 25-26 września 2025 roku w naszym mieście.  Wydarzenie zgromadziło kilkudziesięciu ekspertów z branży pod hasłem „Nowe technologie w służbie efektywnej publicznej komunikacji zbiorowej".]]></description>
+      <content:encoded>
+        <![CDATA[Zarząd Transportu Miejskiego w Gdańsku był gospodarzem dwudniowego spotkania Forum Organizatorów Transportu, które odbyło się w dniach 25-26 września 2025 roku w naszym mieście.  Wydarzenie zgromadziło kilkudziesięciu ekspertów z branży pod hasłem „Nowe technologie w służbie efektywnej publicznej komunikacji zbiorowej".]]></content:encoded>
+      <pubDate>Thu, 02 Oct 2025 10:00:37 +0200</pubDate>
+    </item>
+    <item>
+      <title>Rozkłady jazdy w nowej szacie graficznej</title>
+      <link>https://ztm.gda.pl/wiadomosci/nowa-szata-graficzna-rozkladow,a,11066</link>
+      <guid>https://ztm.gda.pl/wiadomosci/nowa-szata-graficzna-rozkladow,a,11066</guid>
+      <description>
+        <![CDATA[Rozkład jazdy to podstawowe źródło informacji dla pasażera na przystanku. Dlatego musi być maksymalnie przejrzysty, zrozumiały i przyjazny dla oka. ]]></description>
+      <content:encoded>
+        <![CDATA[Rozkład jazdy to podstawowe źródło informacji dla pasażera na przystanku. Dlatego musi być maksymalnie przejrzysty, zrozumiały i przyjazny dla oka. ]]></content:encoded>
+      <pubDate>Mon, 29 Sep 2025 10:44:51 +0200</pubDate>
+    </item>
+    <item>
+      <title>Nastolatka zasłabła w autobusie – kierowca natychmiast wezwał pomoc</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/zaslabla-w-autobusie-kierowca-natychmiast-wezwal-pomoc,a,11051
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/zaslabla-w-autobusie-kierowca-natychmiast-wezwal-pomoc,a,11051
+      </guid>
+      <description>
+        <![CDATA[Poniedziałkowy poranek na przystanku „Stare Szkoty" pokazał, że nasi kierowcy to prawdziwi bohaterowie dnia codziennego.]]></description>
+      <content:encoded>
+        <![CDATA[Poniedziałkowy poranek na przystanku „Stare Szkoty" pokazał, że nasi kierowcy to prawdziwi bohaterowie dnia codziennego.]]></content:encoded>
+      <pubDate>Tue, 23 Sep 2025 10:38:42 +0200</pubDate>
+    </item>
+    <item>
+      <title>Gdańszczanki i gdańszczanie zdecydują o nowych stacjach Mevo</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/gdanszczanki-i-gdanszczanie-zdecyduja-o-nowych-stacjach-mevo,a,11049
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/gdanszczanki-i-gdanszczanie-zdecyduja-o-nowych-stacjach-mevo,a,11049
+      </guid>
+      <description>
+        <![CDATA[Od 22 września do 5 października 2025 roku mieszkańcy Gdańska wskażą, gdzie powstanie 25 nowych stacji Systemu Roweru Metropolitalnego Mevo. Do wyboru jest 50 propozycji lokalizacji – każdy może wybrać maksymalnie pięć z nich. Te, które zdobędą największe poparcie, zostaną zrealizowane wiosną 2026 roku.]]></description>
+      <content:encoded>
+        <![CDATA[Od 22 września do 5 października 2025 roku mieszkańcy Gdańska wskażą, gdzie powstanie 25 nowych stacji Systemu Roweru Metropolitalnego Mevo. Do wyboru jest 50 propozycji lokalizacji – każdy może wybrać maksymalnie pięć z nich. Te, które zdobędą największe poparcie, zostaną zrealizowane wiosną 2026 roku.]]></content:encoded>
+      <pubDate>Mon, 22 Sep 2025 12:56:00 +0200</pubDate>
+    </item>
+    <item>
+      <title>Rowerem z Chełmu do Śródmieścia w 5 minut</title>
+      <link>https://ztm.gda.pl/wiadomosci/rowerem-z-chelmu-do-srodmiescia-w-5-minut,a,11048</link>
+      <guid>https://ztm.gda.pl/wiadomosci/rowerem-z-chelmu-do-srodmiescia-w-5-minut,a,11048</guid>
+      <description>
+        <![CDATA[W sobotę, 20 września, Gdańsk oficjalnie otworzył pierwszy etap ekostrady wzdłuż al. Armii Krajowej. To inwestycja o długości blisko 2 kilometrów, która łączy Chełm ze Śródmieściem i umożliwia szybki oraz bezpieczny przejazd rowerem do centrum w około 5 minut. W uroczystości uczestniczyli Aleksandra Dulkiewicz, prezydent Gdańska, Piotr Borawski, zastępca prezydenta ds. mobilności i bezpieczeństwa oraz miejscy radni i miłośnicy rowerów. ]]></description>
+      <content:encoded>
+        <![CDATA[W sobotę, 20 września, Gdańsk oficjalnie otworzył pierwszy etap ekostrady wzdłuż al. Armii Krajowej. To inwestycja o długości blisko 2 kilometrów, która łączy Chełm ze Śródmieściem i umożliwia szybki oraz bezpieczny przejazd rowerem do centrum w około 5 minut. W uroczystości uczestniczyli Aleksandra Dulkiewicz, prezydent Gdańska, Piotr Borawski, zastępca prezydenta ds. mobilności i bezpieczeństwa oraz miejscy radni i miłośnicy rowerów. ]]></content:encoded>
+      <pubDate>Mon, 22 Sep 2025 10:50:00 +0200</pubDate>
+    </item>
+    <item>
+      <title>Do Gdańska trafi 30 nowych autobusów elektrycznych</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/do-gdanska-trafi-30-nowych-autobusow-elektrycznych,a,11031
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/do-gdanska-trafi-30-nowych-autobusow-elektrycznych,a,11031
+      </guid>
+      <description>
+        <![CDATA[Do września przyszłego roku na ulice Gdańska wyjedzie 30 nowoczesnych, zeroemisyjnych autobusów elektrycznych. Ta inwestycja, warta ponad 110 milionów złotych, to największy jak dotąd krok w stronę czystego i ekologicznego transportu publicznego, który zrewolucjonizuje podróże po naszym mieście.]]></description>
+      <content:encoded>
+        <![CDATA[Do września przyszłego roku na ulice Gdańska wyjedzie 30 nowoczesnych, zeroemisyjnych autobusów elektrycznych. Ta inwestycja, warta ponad 110 milionów złotych, to największy jak dotąd krok w stronę czystego i ekologicznego transportu publicznego, który zrewolucjonizuje podróże po naszym mieście.]]></content:encoded>
+      <pubDate>Thu, 11 Sep 2025 14:52:05 +0200</pubDate>
+    </item>
+    <item>
+      <title>Gdańsk na rowerze – kampania, rekordy Mevo i nowa ekostrada</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/gdansk-na-rowerze-kampania-rekordy-mevo-i-nowa-ekostrada,a,11020
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/gdansk-na-rowerze-kampania-rekordy-mevo-i-nowa-ekostrada,a,11020
+      </guid>
+      <description>
+        <![CDATA[We wrześniu Gdańsk znów kręci kilometry. Ruszyła 13. edycja kampanii „Rowerem do pracy i szkoły – Kręć kilometry dla Gdańska”, za nami rekordowe wakacje z rowerem metropolitalnym Mevo, a już 20 września mieszkańcy wspólnie otworzą nową ekostradę wzdłuż Armii Krajowej. To jednak dopiero początek zmian, jakie czekają rowerzystów.]]></description>
+      <content:encoded>
+        <![CDATA[We wrześniu Gdańsk znów kręci kilometry. Ruszyła 13. edycja kampanii „Rowerem do pracy i szkoły – Kręć kilometry dla Gdańska”, za nami rekordowe wakacje z rowerem metropolitalnym Mevo, a już 20 września mieszkańcy wspólnie otworzą nową ekostradę wzdłuż Armii Krajowej. To jednak dopiero początek zmian, jakie czekają rowerzystów.]]></content:encoded>
+      <pubDate>Fri, 05 Sep 2025 14:18:03 +0200</pubDate>
+    </item>
+    <item>
+      <title>Bilety okresowe tylko w Systemie FALA – kolejny etap rozwoju wspólnego systemu
+        komunikacji
+      </title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/bilety-okresowe-tylko-w-systemie-fala-kolejny-etap-rozwoju-wspolnego-systemu-komunikacji,a,10867
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/bilety-okresowe-tylko-w-systemie-fala-kolejny-etap-rozwoju-wspolnego-systemu-komunikacji,a,10867
+      </guid>
+      <description>
+        <![CDATA[Od 4 sierpnia bilety okresowe na komunikację miejską w Gdańsku, Gdyni i w całej metropolii trafią do jednego systemu – FALA.]]></description>
+      <content:encoded>
+        <![CDATA[Od 4 sierpnia bilety okresowe na komunikację miejską w Gdańsku, Gdyni i w całej metropolii trafią do jednego systemu – FALA.]]></content:encoded>
+      <pubDate>Mon, 30 Jun 2025 12:32:19 +0200</pubDate>
+    </item>
+    <item>
+      <title>Gdańsk pożegnał Velo-city 2025. Flaga trafiła do Rimini</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/gdansk-pozegnal-velo-city-2025-flaga-trafila-do-rimini,a,10827
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/gdansk-pozegnal-velo-city-2025-flaga-trafila-do-rimini,a,10827
+      </guid>
+      <description>
+        <![CDATA[Za nami cztery intensywne dni, które na dobre wpisały Gdańsk na rowerową mapę świata. Velo-city 2025 – najważniejsza na świecie konferencja poświęcona polityce rowerowej i zrównoważonej mobilności – dobiegła końca. Przez ten czas do Gdańska przyjechało ponad 1000 uczestników z ponad 60 krajów, by wspólnie rozmawiać o przyszłości miast, które chcą tworzyć dla ludzi. Gdańsk, jako pierwsze miasto w Polsce, został gospodarzem wydarzenia tej rangi – i zdał ten egzamin celująco.]]></description>
+      <content:encoded>
+        <![CDATA[Za nami cztery intensywne dni, które na dobre wpisały Gdańsk na rowerową mapę świata. Velo-city 2025 – najważniejsza na świecie konferencja poświęcona polityce rowerowej i zrównoważonej mobilności – dobiegła końca. Przez ten czas do Gdańska przyjechało ponad 1000 uczestników z ponad 60 krajów, by wspólnie rozmawiać o przyszłości miast, które chcą tworzyć dla ludzi. Gdańsk, jako pierwsze miasto w Polsce, został gospodarzem wydarzenia tej rangi – i zdał ten egzamin celująco.]]></content:encoded>
+      <pubDate>Fri, 13 Jun 2025 20:49:11 +0200</pubDate>
+    </item>
+    <item>
+      <title>XI edycja Rowerowego Maja zakończona – ponad milion aktywnych podróży!</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/xi-edycja-rowerowego-maja-zakonczona-ponad-milion-aktywnych-podrozy,a,10818
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/xi-edycja-rowerowego-maja-zakonczona-ponad-milion-aktywnych-podrozy,a,10818
+      </guid>
+      <description>
+        <![CDATA[Dobiegła końca 11. edycja kampanii Rowerowy Maj, największej w Polsce inicjatywy promującej aktywność fizyczną i ekologiczne środki transportu wśród dzieci i młodzieży. Pomysł, który zrodził się w Gdańsku, dziś łączy szkoły i przedszkola w całym kraju – w tegorocznej edycji udział wzięły aż 32 gminy, a liczba aktywnych uczestników przekroczyła 283 tysiące!]]></description>
+      <content:encoded>
+        <![CDATA[Dobiegła końca 11. edycja kampanii Rowerowy Maj, największej w Polsce inicjatywy promującej aktywność fizyczną i ekologiczne środki transportu wśród dzieci i młodzieży. Pomysł, który zrodził się w Gdańsku, dziś łączy szkoły i przedszkola w całym kraju – w tegorocznej edycji udział wzięły aż 32 gminy, a liczba aktywnych uczestników przekroczyła 283 tysiące!]]></content:encoded>
+      <pubDate>Wed, 11 Jun 2025 14:31:25 +0200</pubDate>
+    </item>
+    <item>
+      <title>Gdańsk rowerową stolicą świata</title>
+      <link>https://ztm.gda.pl/wiadomosci/gdansk-rowerowa-stolica-swiata,a,10817</link>
+      <guid>https://ztm.gda.pl/wiadomosci/gdansk-rowerowa-stolica-swiata,a,10817</guid>
+      <description>
+        <![CDATA[Konferencja Velo-city po raz pierwszy w historii odbywa się w Polsce – i to właśnie w Gdańsku! Do naszego miasta zjechali eksperci, innowatorzy i pasjonaci dwóch kółek z całego świata: ponad tysiąc uczestników z przeszło 60 krajów.]]></description>
+      <content:encoded>
+        <![CDATA[Konferencja Velo-city po raz pierwszy w historii odbywa się w Polsce – i to właśnie w Gdańsku! Do naszego miasta zjechali eksperci, innowatorzy i pasjonaci dwóch kółek z całego świata: ponad tysiąc uczestników z przeszło 60 krajów.]]></content:encoded>
+      <pubDate>Tue, 10 Jun 2025 20:48:06 +0200</pubDate>
+    </item>
+    <item>
+      <title>22. Fląder Festiwal – zabytkowym tramwajem na koncerty do Brzeźna</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/22-flader-festiwal-zabytkowym-tramwajem-na-koncerty-do-brzezna,a,10815
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/22-flader-festiwal-zabytkowym-tramwajem-na-koncerty-do-brzezna,a,10815
+      </guid>
+      <description>
+        <![CDATA[W piątek i sobotę 13 i 14 czerwca, na brzeźnieńskiej plaży i w Parku Haffnera odbędzie się 22. Fląder Festiwal, czyli największy na Wybrzeżu niebiletowany festiwal muzyki niezależnej i alternatywnej.]]></description>
+      <content:encoded>
+        <![CDATA[W piątek i sobotę 13 i 14 czerwca, na brzeźnieńskiej plaży i w Parku Haffnera odbędzie się 22. Fląder Festiwal, czyli największy na Wybrzeżu niebiletowany festiwal muzyki niezależnej i alternatywnej.]]></content:encoded>
+      <pubDate>Tue, 10 Jun 2025 12:40:21 +0200</pubDate>
+    </item>
+    <item>
+      <title>Przyłącz się do Velo-city na paradzie rowerowej!</title>
+      <link>https://ztm.gda.pl/wiadomosci/przylacz-sie-do-velo-city-na-paradzie-rowerowej,a,10795
+      </link>
+      <guid>https://ztm.gda.pl/wiadomosci/przylacz-sie-do-velo-city-na-paradzie-rowerowej,a,10795
+      </guid>
+      <description>
+        <![CDATA[W środę, 11 czerwca 2025 r., ulicami Gdańska przejedzie barwna Parada Rowerowa Velo-city.]]></description>
+      <content:encoded>
+        <![CDATA[W środę, 11 czerwca 2025 r., ulicami Gdańska przejedzie barwna Parada Rowerowa Velo-city.]]></content:encoded>
+      <pubDate>Wed, 04 Jun 2025 20:11:54 +0200</pubDate>
+    </item>
+    <item>
+      <title>Wymiana Kart Miejskich ZTM na System FALA dobiega końca</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/wymiana-kart-miejskich-ztm-na-system-fala-dobiega-konca,a,10763
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/wymiana-kart-miejskich-ztm-na-system-fala-dobiega-konca,a,10763
+      </guid>
+      <description>
+        <![CDATA[Powoli kończy się akcja „Wymiana Kart Miejskich ZTM na System FALA”. Pasażerowie mają czas do 31 maja. Wszystkie bilety kupione na karty ZTM będą ważne do końca okresu, na jaki obowiązują. ]]></description>
+      <content:encoded>
+        <![CDATA[Powoli kończy się akcja „Wymiana Kart Miejskich ZTM na System FALA”. Pasażerowie mają czas do 31 maja. Wszystkie bilety kupione na karty ZTM będą ważne do końca okresu, na jaki obowiązują. ]]></content:encoded>
+      <pubDate>Mon, 26 May 2025 12:53:12 +0200</pubDate>
+    </item>
+    <item>
+      <title>Jelcz Ogórek na gdańskich ulicach, pierwsza przejażdżka już w Dzień Dziecka!</title>
+      <link>
+        https://ztm.gda.pl/wiadomosci/jelcz-ogorek-na-gdanskich-ulicach-pierwsza-przejazdzka-juz-w-dzien-dziecka,a,10758
+      </link>
+      <guid>
+        https://ztm.gda.pl/wiadomosci/jelcz-ogorek-na-gdanskich-ulicach-pierwsza-przejazdzka-juz-w-dzien-dziecka,a,10758
+      </guid>
+      <description>
+        <![CDATA[Z Muzeum II Wojny Światowej na Westerplatte historycznym Jelczem Ogórkiem z 1984 roku.]]></description>
+      <content:encoded>
+        <![CDATA[Z Muzeum II Wojny Światowej na Westerplatte historycznym Jelczem Ogórkiem z 1984 roku.]]></content:encoded>
+      <pubDate>Fri, 23 May 2025 11:23:39 +0200</pubDate>
+    </item>
+  </channel>
+</rss>
