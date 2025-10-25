@@ -4,37 +4,111 @@ import time
 import json
 
 from dotenv import load_dotenv
+from botocore.auth import SigV4Auth
+from botocore.awsrequest import AWSRequest
+from botocore.exceptions import ClientError
+import requests
 
 load_dotenv()
 
 from graph import runnable
 
 
-sqs = boto3.resource('sqs',
+sqs_in = boto3.resource('sqs',
     endpoint_url=os.environ.get('SQS_URL_RAW'),
     aws_access_key_id=os.environ.get('SQS_ADMIN_ACCESS_KEY_ID'),
     aws_secret_access_key=os.environ.get('SQS_ADMIN_SECRET_KEY'),
     region_name='fr-par'
 )
 
-queue = sqs.get_queue_by_name(QueueName='queue-raw-articles')
+queue_in = sqs_in.get_queue_by_name(QueueName='queue-raw-articles')
 
-# Needed outputs (if relevant):
-# To S3 - Summary, text content
-# To SQS - summary_path, tags, category, importance_score, sentiment_score, source_reliability_score
+sqs_out = boto3.resource('sqs',
+    endpoint_url=os.environ.get('SQS_URL_SUMMARIES'),
+    aws_access_key_id=os.environ.get('SQS_ADMIN_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.environ.get('SQS_ADMIN_SECRET_KEY'),
+    region_name='fr-par'
+)
 
-S3_MOCK_CONTENT = """
-<title>
-Apple dało ciała. Nowy MacBook Pro z M5 dobija do 102℃
-</title>
+queue_out = sqs_out.get_queue_by_name(QueueName='queue-summaries')
 
-<description>
-<p>Niestety, fizyki nie da się oszukać - smukła obudowa i mały radiator oznaczają wysokie temperatury pod obciążeniem. Jest lepiej niż było, ale nadal źle.</p><p>Podobnie jak poprzednik, nowy <strong><a href="https://www.telepolis.pl/tech/sprzet/apple-m5-specyfikacja-wydajnosc">Apple M5</a></strong> oferuje swoim użytkownikom <strong>tylko 10 rdzeni</strong> w konfiguracji 4 duże, wysokowydajne i 6 małych, energooszczędnych. <strong>Amerykanie nie zdecydowali się więc na zmianę układu chłodzenia</strong> - to nadal jeden ciepłowód, jeden wentylator i malutki radiator. <strong>I kolejny raz są problemy z wysokimi temperaturami.</strong></p><p><h3><strong>Dopiero MacBooki z M5 Pro i M5 Max dostaną dwa wentylatory</strong></h3></p><p>Według pomiarów przeprowadzonych przez kanał <a href="https://www.youtube.com/watch?v=Clwet4ckP2A">"Max Tech"</a> na YouTube, gdzie porównywany jest procesor Apple M4 i M5 w laptopach MacBook Pro, <strong>nowy chip dobija do 102℃</strong>. Dochodzi więc do zjawiska <strong>thermal throttlingu</strong>, czyli tzw. dławienia termicznego. <strong>Uruchamia się wtedy zabezpieczenie przed przegrzaniem </strong>i sztucznie ograniczana jest wydajność.</p><p><img src="https://pliki.telepolis.pl/file/237992/original.jpg" alt="Apple dało ciała. Nowy MacBook Pro z M5 dobija do 102℃" loading="lazy" data-image-id="237992" data-image-squared="false"></p><p>Aby <strong>obciążyć CPU w 100%</strong> użyto popularnego programu <strong>Cinebench R24</strong><strong>,</strong> a więc takich temperatur nie zobaczy się podczas surfowania po sieci czy oglądania filmów i seriali. Jednak przy bardziej wymagającej pracy już tak.</p><p><img src="https://pliki.telepolis.pl/file/237993/original.jpg" alt="Apple dało ciała. Nowy MacBook Pro z M5 dobija do 102℃" loading="lazy" data-image-id="237993" data-image-squared="false"></p><p>Warto zaznaczyć, że <strong>Apple M5 i tak wypada lepiej niż M4</strong>. Nowy procesor jest o około 14℃ chłodniejszy, gdyż stary w tych samych warunkach osiąga 116℃. Spowodowane to jest zapewne <strong>wykorzystaniem lepszej litografii (TSMC N3P vs N3E</strong>). Jest też szansa, że Gigant z Cupertino sięgnął po lepszą pastę termoprzewodząca/termopad, np. Honeywell PTM7950.</p><p>Osoby, którym zależy na niskich temperaturach i cichej pracy powinny wstrzymać się z zakupem laptopa. Według ostatnich doniesień w pierwszej połowie przyszłego roku pojawią się rozwiązania z mocniejszymi chipami M5 Pro i M5 Max, które dostają lepszy układ chłodzenia z dwoma wentylatorami.</p><p><iframe width="560" height="315" src="https://www.youtube.com/embed/Clwet4ckP2A" frameborder="0" allowfullscreen></iframe></p>
-</description>
-"""
+
+def download_from_s3(path):
+    bucket_name = 'hackathon-team-5-pl'
+    REGION = 'pl-waw'
+
+    url = f'https://{bucket_name}.s3.{REGION}.scw.cloud/{path}'
+
+    request = AWSRequest(method='GET', url=url, data=b'')
+    credentials = boto3.Session(
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
+    ).get_credentials()
+
+    SigV4Auth(credentials, 's3', REGION).add_auth(request)
+
+    request.headers['X-Amz-Content-Sha256'] = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'  # SHA256 hash of an empty string
+
+    # Make the request
+    response = requests.get(url, headers=dict(request.headers))
+
+    if response.status_code == 200:
+        # Return the content - string txt instead of bytes
+        return response.content.decode('utf-8')
+
+
+def upload_to_s3(path, content):
+    bucket_name = 'hackathon-team-5-pl'
+    REGION = 'pl-waw'
+
+    s3_client = boto3.client(
+        's3',
+        region_name=REGION,
+        endpoint_url=f'https://{bucket_name}.s3.{REGION}.scw.cloud',
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    )
+
+    fields = {
+        "acl": "private",
+        "Cache-Control": "nocache",
+        "Content-Type": "application/json"
+    }
+
+    try:
+        presigned = s3_client.generate_presigned_post(
+            Bucket=bucket_name,
+            Key=path,
+            Fields=fields,
+            Conditions=[
+                {"acl": "private"},
+                {"Cache-Control": "nocache"},
+                {"Content-Type": "application/json"},
+                {"key": path}
+            ],
+            ExpiresIn=120
+        )
+    except ClientError as e:
+        print(f"[ERROR] Failed to generate presigned URL: {e}")
+        return False
+
+    # upload JSON as string
+    files = {'file': ('file', content, 'application/json')}
+    response = requests.post(presigned['url'], data=presigned['fields'], files=files)
+
+    if response.status_code == 204:
+        print("[INFO] Upload successful")
+        return True
+    else:
+        print("[ERROR] Upload failed:", response.status_code, response.content)
+        return False
+
+
+
 
 def handle_message(body, attributes):
-    message = json.loads(body)
+    message = json.loads(json.loads(body).get("Message", {}))
+    print(f"[AGENTS] Received message: {message}")
     if 'articleId' not in message or 'articlePath' not in message or 'category' not in message:
         print("[ERROR] Invalid message format.")
         return
@@ -46,7 +120,11 @@ def handle_message(body, attributes):
     # 4. Store summary and text content to S3
     # 5. Send message to another SQS queue with summary_path, tags, category, importance_score, sentiment_score, source_reliability_score
 
-    article_content = S3_MOCK_CONTENT
+    article_content = download_from_s3(message["articlePath"])
+    if not article_content:
+        print("[ERROR] Failed to download article from S3.")
+        return
+    
     state = {
         "article_text": article_content,
         "category": message["category"]
@@ -54,17 +132,35 @@ def handle_message(body, attributes):
 
     result = runnable.invoke(state)
 
+    if not result.get("relevance", False):
+        print("[INFO] Article not relevant, skipping.")
+        return
 
-    print(result)
-    # @TODO: send results to s3 and sqs
-    # article_id = message["articleId"]
+    summary_path = f'summaries/article_{message["articleId"]}_summary.json'
+    summary_content = json.dumps({
+        "summary": result.get("summary", "")
+    })
+    print("[INFO] Uploading summary to S3 at", summary_path)
+    upload_to_s3(summary_path, summary_content)
+
+    payload = {
+        "articleId": message["articleId"],
+        "articleSummaryPath": summary_path,
+        "oneLineSummary": result.get("one_liner", ""),
+        "keywords": result.get("keywords", []),
+        "importanceScore": result.get("importance_score", 0),
+        "sentimentScore": result.get("sentiment_score", 0),
+        "sourceReliabilityScore": result.get("source_reliability_score", 0),
+        "summary": result.get("summary", "")
+    }
+    queue_out.send_message(MessageBody=json.dumps(payload))
 
 
 def main():
     print("[AGENTS] Module started. Listening for messages...")
 
     while True:
-        messages = queue.receive_messages(
+        messages = queue_in.receive_messages(
             MessageAttributeNames=["All"],
             MaxNumberOfMessages=10,
             WaitTimeSeconds=5
