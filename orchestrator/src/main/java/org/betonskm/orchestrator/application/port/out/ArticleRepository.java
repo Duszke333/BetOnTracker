@@ -12,4 +12,6 @@ public interface ArticleRepository {
   Optional<Article> fetchById(UUID articleId);
 
   List<Article> fetchArticlesForCategory(Integer categoryId);
+
+  boolean existsByArticleLink(String articleLink);
 }

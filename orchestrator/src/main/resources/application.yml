@@ -42,6 +42,12 @@ aws:
     summarize-articles-topic-arn: ${SUMMARIZE_ARTICLES_SNS_ARN:arn:aws:sns:fr-par:000000000000:summarize-articles-topic}
     access-key-id: ${SNS_ADMIN_ACCESS_KEY_ID:x}
     secret-key: ${SNS_ADMIN_SECRET_KEY:x}
+  s3:
+    endpoint: ${AWS_S3_ENDPOINT:https://s3.pl-waw.scw.cloud}
+    region: ${AWS_S3_REGION:pl-waw}
+    bucket: ${AWS_S3_BUCKET:bucket}
+    access-key-id: ${S3_ADMIN_ACCESS_KEY_ID:x}
+    secret-key: ${S3_ADMIN_SECRET_KEY:x}
 
 app:
   scheduling:
