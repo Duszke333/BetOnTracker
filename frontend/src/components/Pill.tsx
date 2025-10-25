@@ -11,7 +11,7 @@ export default function Pill({
     <button
       type="button"
       onClick={() => setSelectedItem(selectedItem === name ? null : name)}
-      className={`py-1 px-2 rounded-full text-sm shadow-sm cursor-pointer ${
+      className={`py-1 px-2 rounded-full whitespace-nowrap text-sm shadow-sm cursor-pointer ${
         name === selectedItem
           ? "text-zinc-100 bg-zinc-600"
           : "bg-zinc-400 dark:bg-zinc-800"

@@ -16,7 +16,7 @@ export default function SearchableRow({
   title: string;
 }) {
   return (
-    <div className="my-2 flex flex-row items-center max-w-4xl">
+    <div className="my-2 flex flex-row items-center">
       <h3 className="text-lg font-bold mr-2">{title}</h3>
       <input
         type="text"
