@@ -23,6 +23,7 @@ import org.betonskm.orchestrator.application.command.AddWebsiteToCategoryCommand
 import org.betonskm.orchestrator.application.command.CreateCategoryCommand;
 import org.betonskm.orchestrator.application.command.DecommissionCategoryCommand;
 import org.betonskm.orchestrator.application.port.in.CategoryManagementUseCase;
+import org.betonskm.orchestrator.configuration.annotations.DefaultApiExceptions;
 import org.betonskm.orchestrator.configuration.annotations.DefaultApiSecurity;
 import org.betonskm.orchestrator.domain.category.Category;
 import org.betonskm.orchestrator.domain.website.Website;
@@ -52,6 +53,7 @@ public class CategoryManagementController {
 
   @PostMapping(path = CREATE_CATEGORY_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
   @DefaultApiSecurity
+  @DefaultApiExceptions
   @Operation(summary = "Create a new feed category")
   @ApiResponse(responseCode = "200", description = "Feed category created successfully")
   public CategoryAPIResponse createCategory(@RequestBody @Valid CreateCategoryAPIRequest createCategoryAPIRequest) {
@@ -65,6 +67,7 @@ public class CategoryManagementController {
 
   @GetMapping(path = FETCH_CATEGORIES_PATH, produces = APPLICATION_JSON_VALUE)
   @DefaultApiSecurity
+  @DefaultApiExceptions
   @Operation(summary = "Fetch all active feed categories")
   @ApiResponse(responseCode = "200", description = "Feed categories fetched successfully")
   public FetchAllCategoriesAPIResponse fetchAllCategories() {
@@ -79,6 +82,7 @@ public class CategoryManagementController {
 
   @DeleteMapping(path = DECOMISSION_CATEGORY_PATH)
   @DefaultApiSecurity
+  @DefaultApiExceptions
   @Operation(summary = "Delete a feed category")
   @ApiResponse(responseCode = "200", description = "Feed category deleted successfully")
   public void decommissionCategory(
@@ -93,6 +97,7 @@ public class CategoryManagementController {
 
   @PostMapping(path = ADD_WEBSITE_TO_FEED_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
   @DefaultApiSecurity
+  @DefaultApiExceptions
   @Operation(summary = "Add a website to category")
   @ApiResponse(responseCode = "200", description = "Feed category deleted successfully")
   public WebsiteAPIResponse addWebsiteToFeed(

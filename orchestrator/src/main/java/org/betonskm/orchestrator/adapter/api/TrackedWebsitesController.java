@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.adapter.api.model.mapper.WebsiteResponseMapper;
 import org.betonskm.orchestrator.adapter.api.model.response.FetchWebsitesAPIResponse;
 import org.betonskm.orchestrator.application.port.in.WebsiteTrackingUseCase;
+import org.betonskm.orchestrator.configuration.annotations.DefaultApiExceptions;
 import org.betonskm.orchestrator.configuration.annotations.DefaultApiSecurity;
 import org.betonskm.orchestrator.domain.website.Website;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,7 @@ public class TrackedWebsitesController {
 
   @GetMapping(path = FETCH_TRACKED_WEBSITES_PATH, produces = APPLICATION_JSON_VALUE)
   @DefaultApiSecurity
+  @DefaultApiExceptions
   @Operation(summary = "Fetch all active websites (reference count > 0)")
   @ApiResponse(responseCode = "200", description = "Websites fetched successfully")
   public FetchWebsitesAPIResponse fetchTrackedWebsites() {

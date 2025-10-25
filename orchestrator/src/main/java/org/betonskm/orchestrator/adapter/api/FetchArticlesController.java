@@ -18,6 +18,7 @@ import org.betonskm.orchestrator.adapter.api.model.response.FetchArticlesAPIResp
 import org.betonskm.orchestrator.adapter.api.model.validation.ValidUUID;
 import org.betonskm.orchestrator.application.command.FetchArticlesCommand;
 import org.betonskm.orchestrator.application.port.in.ArticleManagementUseCase;
+import org.betonskm.orchestrator.configuration.annotations.DefaultApiExceptions;
 import org.betonskm.orchestrator.configuration.annotations.DefaultApiSecurity;
 import org.betonskm.orchestrator.domain.article.Article;
 import org.betonskm.orchestrator.domain.summary.ArticleSummary;
@@ -42,6 +43,7 @@ public class FetchArticlesController {
 
   @GetMapping(path = FETCH_ARTICLES_PATH, produces = APPLICATION_JSON_VALUE)
   @DefaultApiSecurity
+  @DefaultApiExceptions
   @Operation(summary = "Fetch all articles for given feed")
   @ApiResponse(responseCode = "200", description = "Articles fetched successfully")
   public FetchArticlesAPIResponse fetchArticlesForCategory(
@@ -60,6 +62,7 @@ public class FetchArticlesController {
 
   @GetMapping(path = FETCH_ARTICLE_SUMMARY_PATH, produces = APPLICATION_JSON_VALUE)
   @DefaultApiSecurity
+  @DefaultApiExceptions
   @Operation(summary = "Fetch summary for a given article")
   @ApiResponse(responseCode = "200", description = "Article summary fetched successfully")
   public ArticleSummaryAPIResponse fetchArticleSummary(
