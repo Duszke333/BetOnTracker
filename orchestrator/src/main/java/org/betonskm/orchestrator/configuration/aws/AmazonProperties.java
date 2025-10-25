@@ -3,7 +3,6 @@ package org.betonskm.orchestrator.configuration.aws;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -26,6 +25,7 @@ public class AmazonProperties {
     private String endpoint;
     private String region;
     private String newsArticlesQueueUrl;
+    private String articleSummaryQueueUrl;
   }
 
   @Getter

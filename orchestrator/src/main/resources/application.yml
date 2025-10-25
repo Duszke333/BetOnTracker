@@ -35,6 +35,7 @@ aws:
     news-articles-queue-url: ${NEWS_ARTICLES_SQS_URL:https://sqs.mnq.fr-par.scaleway.com/000000000000/news-articles-queue}
     access-key-id: ${SQS_ADMIN_ACCESS_KEY_ID:x}
     secret-key: ${SQS_ADMIN_SECRET_KEY:x}
+    article-summary-queue-url: ${ARTICLE_SUMMARY_SQS_URL:https://sqs.mnq.fr-par.scaleway.com/000000000000/queue-summaries}
   sns:
     endpoint: ${AWS_SNS_ENDPOINT:https://sqs.mnq.fr-par.scaleway.com}
     region: ${AWS_SNS_REGION:fr-par}
