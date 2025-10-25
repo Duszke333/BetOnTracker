@@ -29,25 +29,29 @@ print(queue.attributes)
 #     queue.send_message(MessageBody=json.dumps(payload))
 
 payload = {
-    "article_path": "/feeds/raw/telecom/article_1.txt",
+    "articleId": "123",
+    "articlePath": "/feeds/raw/phones/article_1.txt",
     "category": "telecom",
 }
 queue.send_message(MessageBody=json.dumps(payload))
 
 payload = {
-    "article_path": "/feeds/raw/phones/article_1.txt",
+    "articleId": "123",
+    "articlePath": "/feeds/raw/phones/article_1.txt",
     "category": "apple",
 }
 queue.send_message(MessageBody=json.dumps(payload))
 
 payload = {
-    "article_path": "/feeds/raw/phones/article_1.txt",
+    "articleId": "123",
+    "articlePath": "/feeds/raw/phones/article_1.txt",
     "category": "computers",
 }
 queue.send_message(MessageBody=json.dumps(payload))
 
 payload = {
-    "article_path": "/feeds/raw/phones/article_1.txt",
+    "articleId": "123",
+    "articlePath": "/feeds/raw/phones/article_1.txt",
     "category": "fruits",
 }
 queue.send_message(MessageBody=json.dumps(payload))

@@ -2,11 +2,13 @@ import boto3
 import os
 import time
 import json
+
 from dotenv import load_dotenv
 
-from evaluate import evaluate_relevance
-
 load_dotenv()
+
+from graph import runnable
+
 
 sqs = boto3.resource('sqs',
     endpoint_url=os.environ.get('SQS_URL_RAW'),
@@ -33,14 +35,9 @@ Apple dało ciała. Nowy MacBook Pro z M5 dobija do 102℃
 
 def handle_message(body, attributes):
     message = json.loads(body)
-    if 'article_path' not in message or 'category' not in message:
+    if 'articleId' not in message or 'articlePath' not in message or 'category' not in message:
         print("[ERROR] Invalid message format.")
         return
-    article_path = message['article_path']
-    category = message['category']
-
-    # TODO: agent logic, calls to LLMs, etc.
-    print(f"[AGENTS] [MOCK] Article Path: {article_path}, Category: {category}")
 
     # Steps:
     # 1. Read article from S3 
@@ -49,15 +46,18 @@ def handle_message(body, attributes):
     # 4. Store summary and text content to S3
     # 5. Send message to another SQS queue with summary_path, tags, category, importance_score, sentiment_score, source_reliability_score
 
-    # 1. Mock reading article from S3
     article_content = S3_MOCK_CONTENT
-    
-    # 2. Relevance check
-    is_relevant = evaluate_relevance(article_content, category)
-    if not is_relevant:
-        print(f"[AGENTS] Article {article_path} is not relevant to category {category}. Skipping.")
-        return
-    print(f"[AGENTS] Article {article_path} is relevant to category {category}. Processing...")
+    state = {
+        "article_text": article_content,
+        "category": message["category"]
+    }
+
+    result = runnable.invoke(state)
+
+
+    print(result)
+    # @TODO: send results to s3 and sqs
+    # article_id = message["articleId"]
 
 
 def main():

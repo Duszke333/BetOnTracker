@@ -18,6 +18,50 @@ Determine if it is relevant to the category "{{category}}".
 Respond only with JSON in this format:
 
 {
-  "relevant": true
+  "relevance": true
 }
+"""
+
+SUMMARIZER_PROMPT = """
+You are an expert news analyst. Always respond in **English**, regardless of the article's language.
+
+Analyze the following article with respect to the category "{{category}}".
+
+Return valid JSON ONLY (no explanations, no backticks):
+
+{
+  "summary": "...",
+  "one_liner": "...",
+  "keywords": ["...", "...", "..."]
+}
+
+Rules:
+- summary: concise but comprehensive (3–6 sentences). Focus on information relevant to "{{category}}".
+- one_liner: 1–2 sentences, headline-style, capturing the main takeaway.
+- keywords: 3–8 short domain-specific keywords, single words or short phrases, English only.
+
+Article:
+{{article_text}}
+"""
+
+SCORING_PROMPT = """
+You are an expert news analyst. Always respond in **English**, regardless of the article's language.
+
+Evaluate the following article with respect to the category "{{category}}".
+
+Return valid JSON ONLY (no explanations, no backticks):
+
+{
+  "importance_score": 1-5,
+  "sentiment_score": 1-5,
+  "source_reliability_score": 1-5
+}
+
+Scoring guidelines:
+- importance_score: How important is the article for "{{category}}"? (1 = irrelevant, 5 = highly important)
+- sentiment_score: Emotional tone. (1 = negative, 3 = neutral, 5 = positive)
+- source_reliability_score: Reliability signals (structure, fact-based tone, bias cues). (1 = low, 5 = high)
+
+Article:
+{{article_text}}
 """
