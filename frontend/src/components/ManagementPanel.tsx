@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import type { Category } from "../types/Category.ts";
 import TopBar from "./TopBar.tsx";
-
-interface Category {
-  categoryId: string;
-  categoryName: string;
-}
 
 export default function ManagementPanel() {
   const [submitting, setSubmitting] = useState(false);
@@ -16,7 +12,7 @@ export default function ManagementPanel() {
     fetch("/api/v1/feed-management/categories/fetch")
       .then((res) => res.json() as Promise<{ categories: Category[] }>)
       .then((res) => setCategories(res.categories))
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   }, []);
 
   const createNewCategory = async () => {
@@ -63,7 +59,7 @@ export default function ManagementPanel() {
           <h1 className="text-3xl font-bold">Kategorie</h1>
           <div className="ml-auto flex gap-2">
             <input
-              className="px-4 py-2 rounded border border-zinc-400 dark:border-zinc-600 focus:outline-none focus:ring-2 focus:ring-[#AA4344]"
+              className="px-2 py-1 rounded-md bg-zinc-300 dark:bg-zinc-800"
               type="text"
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}

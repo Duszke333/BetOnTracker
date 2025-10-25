@@ -15,7 +15,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target:
-          "https://betonskmdbrk79no-orchiestrator-2.functions.fnc.pl-waw.scw.cloud",
+          "https://betonskmdbrk79no-container-distracted-raman.functions.fnc.pl-waw.scw.cloud",
         changeOrigin: true,
         secure: false,
       },
