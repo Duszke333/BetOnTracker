@@ -9,16 +9,21 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.adapter.api.model.mapper.FetchArticlesMapper;
+import org.betonskm.orchestrator.adapter.api.model.response.ArticleSummaryAPIResponse;
 import org.betonskm.orchestrator.adapter.api.model.response.FetchArticlesAPIResponse;
+import org.betonskm.orchestrator.adapter.api.model.validation.ValidUUID;
 import org.betonskm.orchestrator.application.command.FetchArticlesCommand;
 import org.betonskm.orchestrator.application.port.in.ArticleManagementUseCase;
 import org.betonskm.orchestrator.configuration.annotations.DefaultApiSecurity;
 import org.betonskm.orchestrator.domain.article.Article;
+import org.betonskm.orchestrator.domain.summary.ArticleSummary;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FetchArticlesController {
 
   private final static String FETCH_ARTICLES_PATH = ARTICLES_PREFIX + "/fetch";
+  private final static String FETCH_ARTICLE_SUMMARY_PATH = ARTICLES_PREFIX + "/{articleId}/summary";
 
   private final ArticleManagementUseCase articleManagementUseCase;
   private final FetchArticlesMapper fetchArticlesMapper;
@@ -50,5 +56,21 @@ public class FetchArticlesController {
     log.info("[FETCH ARTICLES] Fetched {} articles for category ID: {}", articles.size(), categoryId);
 
     return fetchArticlesMapper.toFetchArticlesAPIResponse(articles);
+  }
+
+  @GetMapping(path = FETCH_ARTICLE_SUMMARY_PATH, produces = APPLICATION_JSON_VALUE)
+  @DefaultApiSecurity
+  @Operation(summary = "Fetch summary for a given article")
+  @ApiResponse(responseCode = "200", description = "Article summary fetched successfully")
+  public ArticleSummaryAPIResponse fetchArticleSummary(
+      @Parameter(description = "ID of the article", required = true, example = "")
+      @PathVariable("articleId") @ValidUUID String articleId
+  ) {
+    log.info("[FETCH ARTICLE SUMMARY] Fetching summary for article ID: {}", articleId);
+
+    ArticleSummary summary = articleManagementUseCase.fetchArticleSummary(UUID.fromString(articleId));
+    log.info("[FETCH ARTICLE SUMMARY] Fetched summary for article ID: {}: {}", articleId, summary);
+
+    return ArticleSummaryAPIResponse.from(UUID.fromString(articleId), summary);
   }
 }
