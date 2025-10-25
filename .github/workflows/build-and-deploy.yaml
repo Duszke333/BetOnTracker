@@ -47,7 +47,7 @@ jobs:
 
       - name: Build function zip
         run: |
-          cd rss/src
+          cd news/src
           pip install -r requirements.txt --target ./package
           zip -r ../../function.zip handlers/ package/
           cd ../..
