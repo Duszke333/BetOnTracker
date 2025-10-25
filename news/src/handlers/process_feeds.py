@@ -201,6 +201,10 @@ def main(event, context):
                 logging.error(f"Error fetching feed from {url}: {e}")
 
     logging.info("News module processing completed.")
+    return {
+        'statusCode': 200,
+        'body': json.dumps('News module executed successfully!')
+    }
 
 if __name__ == "__main__":
     main()
