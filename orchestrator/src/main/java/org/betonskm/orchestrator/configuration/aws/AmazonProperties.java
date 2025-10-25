@@ -14,6 +14,7 @@ public class AmazonProperties {
 
   private AmazonSqsProperties sqs;
   private AmazonSnsProperties sns;
+  private AmazonS3Properties s3;
 
   @Getter
   @Setter
@@ -38,5 +39,16 @@ public class AmazonProperties {
     private String endpoint;
     private String region;
     private String summarizeArticlesTopicArn;
+  }
+
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  public static class AmazonS3Properties {
+    private String accessKeyId;
+    private String secretKey;
+    private String endpoint;
+    private String region;
+    private String bucket;
   }
 }

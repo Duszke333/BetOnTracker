@@ -14,6 +14,7 @@ import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.awscore.client.builder.AwsClientBuilder;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
@@ -41,6 +42,14 @@ public class AmazonConfiguration {
         .build();
   }
 
+  @Bean
+  public S3Client s3Client() {
+    return apply(amazonProperties.getS3().getEndpoint(), S3Client.builder())
+        .region(Region.of(amazonProperties.getS3().getRegion()))
+        .credentialsProvider(buildS3CredentialsProvider())
+        .build();
+  }
+
   private AwsCredentialsProvider buildSqsCredentialsProvider() {
     if (allNotNull(amazonProperties.getSqs().getAccessKeyId(), amazonProperties.getSqs().getSecretKey())) {
       return () -> AwsBasicCredentials.create(
@@ -57,6 +66,17 @@ public class AmazonConfiguration {
       return () -> AwsBasicCredentials.create(
           amazonProperties.getSns().getAccessKeyId(),
           amazonProperties.getSns().getSecretKey()
+      );
+    } else {
+      return DefaultCredentialsProvider.create();
+    }
+  }
+
+  private AwsCredentialsProvider buildS3CredentialsProvider() {
+    if (allNotNull(amazonProperties.getS3().getAccessKeyId(), amazonProperties.getS3().getSecretKey())) {
+      return () -> AwsBasicCredentials.create(
+          amazonProperties.getS3().getAccessKeyId(),
+          amazonProperties.getS3().getSecretKey()
       );
     } else {
       return DefaultCredentialsProvider.create();
