@@ -7,6 +7,7 @@ import org.betonskm.orchestrator.adapter.event.listener.summary.model.ArticleSum
 import org.betonskm.orchestrator.application.port.in.ArticleManagementUseCase;
 import org.betonskm.orchestrator.configuration.transactionoutbox.TransactionInbox;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -16,6 +17,7 @@ public class ArticleSummaryListener {
   private final TransactionInbox transactionInbox;
   private final ArticleManagementUseCase articleManagementUseCase;
 
+  @Transactional
   @SqsListener(value = "${aws.sqs.article-summary-queue-url}")
   public void onArticleSummaryEventReceived(ArticleSummaryEvent event) {
     log.info("[SUMMARY LISTENER] Received Article Summary event: {}", event);
