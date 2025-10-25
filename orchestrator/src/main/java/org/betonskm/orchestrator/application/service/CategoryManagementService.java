@@ -110,4 +110,9 @@ public class CategoryManagementService implements CategoryManagementUseCase {
     log.info("[CATEGORY MANAGEMENT] Added website to category: {}", savedWebsite);
     return savedWebsite;
   }
+
+  @Override
+  public List<Website> getWebsitesInCategory(Integer categoryId) {
+    return websiteRepository.fetchWebsitesForCategory(categoryId);
+  }
 }

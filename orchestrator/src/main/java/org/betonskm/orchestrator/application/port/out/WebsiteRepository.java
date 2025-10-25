@@ -13,4 +13,6 @@ public interface WebsiteRepository {
   List<Website> fetchActiveWebsites();
 
   Optional<Website> fetchById(UUID websiteId);
+
+  List<Website> fetchWebsitesForCategory(Integer categoryId);
 }
