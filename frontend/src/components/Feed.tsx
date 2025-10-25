@@ -35,7 +35,7 @@ export default function Feed() {
       .then((res) => res.json() as Promise<{ articles: Article[] }>)
       .then((res) => setArticles(res.articles))
       .catch((err) => alert(err));
-  }, [selectedCategory, categories]);
+  }, [selectedCategory, categories.find]);
 
   const tags = useMemo(
     () => [...new Set(articles.flatMap((item) => item.keywords))],
@@ -54,13 +54,12 @@ export default function Feed() {
         }
         headerEnd={
           <Link className="font-bold" to="/management">
-            Panel obsługi
+            Management Panel
           </Link>
         }
       />
       <div className="p-4 my-4 mx-8 bg-zinc-200 dark:bg-zinc-700 rounded-lg shadow-lg">
         <div className="flex flex-col">
-          {/*<p className="text-lg">{description}</p>*/}
           <SearchableRow
             title="Categories"
             items={categories.map((c) => c.categoryName)}
@@ -78,14 +77,16 @@ export default function Feed() {
             setSearchTerm={setTagSearchTerm}
           />
         </div>
-        {filteredArticles.map((article) => (
-          <Item
-            key={article.id}
-            {...article}
-            selectedTag={selectedTag}
-            setSelectedTag={setSelectedTag}
-          />
-        ))}
+        <div className="flex flex-col items-center">
+          {filteredArticles.map((article) => (
+            <Item
+              key={article.id}
+              {...article}
+              selectedTag={selectedTag}
+              setSelectedTag={setSelectedTag}
+            />
+          ))}
+        </div>
       </div>
     </>
   );
