@@ -1,6 +1,7 @@
 package org.betonskm.orchestrator.domain.article;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,9 @@ public class Article {
   private String s3SummaryPath;
   private String title;
   private OffsetDateTime createdAt;
+  private String oneLineSummary;
+  private List<String> keywords;
+  private Short importanceScore;
+  private Short sentimentScore;
+  private Short sourceReliabilityScore;
 }

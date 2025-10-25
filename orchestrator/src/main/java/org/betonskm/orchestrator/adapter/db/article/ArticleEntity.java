@@ -1,25 +1,25 @@
 package org.betonskm.orchestrator.adapter.db.article;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.betonskm.orchestrator.adapter.db.category.CategoryEntity;
+import org.betonskm.orchestrator.configuration.database.StringListJsonConverter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -61,5 +61,25 @@ public class ArticleEntity {
   @CreatedDate
   @Column(nullable = false, columnDefinition = "TIMESTAMPTZ")
   private OffsetDateTime createdAt;
+
+  @Size(max = 512)
+  @Column(name = "title", length = 512)
+  private String title;
+
+  @Column(name = "short_summary", length = 2048)
+  private String oneLineSummary;
+
+  @Convert(converter = StringListJsonConverter.class)
+  @Column(name = "keywords", columnDefinition = "jsonb")
+  private List<String> keywords = new ArrayList<>();
+
+  @Column(name = "importance_score")
+  private Short importanceScore; // 1–5
+
+  @Column(name = "sentiment_score")
+  private Short sentimentScore;  // 1–5
+
+  @Column(name = "source_reliability_score")
+  private Short sourceReliabilityScore; // 1–5
 }
 
