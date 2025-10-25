@@ -1,7 +1,7 @@
 ALTER TABLE article
     ADD COLUMN title                    VARCHAR(255)              NOT NULL,
     ADD COLUMN short_summary            VARCHAR(2048),
-    ADD COLUMN keywords                 jsonb DEFAULT '[]'::jsonb NOT NULL,
+    ADD COLUMN keywords                 jsonb DEFAULT '[]'::jsonb,
     ADD COLUMN importance_score         SMALLINT,
     ADD COLUMN sentiment_score          SMALLINT,
     ADD COLUMN source_reliability_score SMALLINT;
