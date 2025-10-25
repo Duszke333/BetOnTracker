@@ -4,11 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.betonskm.orchestrator.adapter.db.category.CategoryMapper;
-import org.betonskm.orchestrator.adapter.db.website.WebsiteMapper;
 import org.betonskm.orchestrator.application.port.out.CategoryWebsiteRepository;
-import org.betonskm.orchestrator.domain.category.Category;
-import org.betonskm.orchestrator.domain.website.Website;
 import org.springframework.stereotype.Component;
 
 @Slf4j
