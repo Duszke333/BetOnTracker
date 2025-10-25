@@ -9,6 +9,61 @@ import requests
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from io import BytesIO
+from datetime import datetime
+from playwright.sync_api import sync_playwright
+
+def get_page_content(url):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto(url)
+        content = page.evaluate('''() => {
+            // Try multiple strategies to find the article content
+            let container = null;
+            
+            // Strategy 1: Look for <article> tag
+            container = document.querySelector('article');
+            
+            // Strategy 2: Look for common article-related classes/ids
+            if (!container) {
+                const selectors = [
+                    '[class*="article"]',
+                    '[id*="article"]',
+                    '[class*="content"]',
+                    '[id*="content"]',
+                    '[class*="post"]',
+                    '[id*="post"]',
+                    'main',
+                    '[role="main"]'
+                ];
+                
+                for (const selector of selectors) {
+                    container = document.querySelector(selector);
+                    if (container) break;
+                }
+            }
+            
+            // Strategy 3: Fallback to body if nothing found
+            if (!container) {
+                container = document.body;
+            }
+            
+            const elements = container.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
+            return Array.from(elements)
+                .filter(el => {
+                    const style = window.getComputedStyle(el);
+                    const isVisible = style.display !== 'none' && 
+                                     style.visibility !== 'hidden' &&
+                                     style.opacity !== '0';
+                    return isVisible;
+                })
+                .map(el => el.innerText.trim())
+                .filter(text => text.length > 0)
+                .join('\\n\\n');
+        }''')
+        
+        browser.close()
+        return content
 
 def parse_feed(url, etag=None, modified=None):
     logging.info(f"Feed parsing requested for URL: {url}")
@@ -18,17 +73,20 @@ def parse_feed(url, etag=None, modified=None):
     if feed.entries:
         parsed_entries = []
         for entry in feed.entries:
+            content = get_page_content(entry.link)
+            logging.info(f"Fetched content for entry: {entry.link}")
             parsed_entries.append({
                 'title': entry.title,
                 'link': entry.link,
                 'description': entry.description,
-                'date': entry.published
+                'date': entry.published_parsed,
+                'content': content
             })
         logging.info(f"Parsed {len(parsed_entries)} entries from the feed.")
-        return parsed_entries, feed.get('etag'), feed.get('modified')
+        return parsed_entries, feed.get('etag'), feed.get('modified_parsed')
     else:
         logging.info("No new entries found in the feed.")
-        return [], feed.get('etag'), feed.get('modified')
+        return [], feed.get('etag'), feed.get('modified_parsed')
 
 def upload_to_s3(content, object_name):
     load_dotenv()
@@ -42,14 +100,14 @@ def upload_to_s3(content, object_name):
 
     s3_client = session.client(
         service_name='s3',
-        region_name='fr-par',
+        region_name='pl-waw',
         use_ssl=True,
-        endpoint_url='https://hackathon-team-5.s3.fr-par.scw.cloud',
+        endpoint_url='https://hackathon-team-5-pl.s3.pl-waw.scw.cloud',
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     )
 
-    bucket_name = 'hackathon-team-5'
+    bucket_name = 'hackathon-team-5-pl'
     fields = {
             "acl": "private",
             "Cache-Control": "nocache",
@@ -106,9 +164,7 @@ def main():
     logging.info("News module initialized.")
 
     urls = [
-        'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-        'http://feeds.bbci.co.uk/news/rss.xml',
-        'https://www.theguardian.com/world/rss',
+        'https://www.telepolis.pl/rss'
     ]
 
     with ThreadPoolExecutor(max_workers=5) as executor:
@@ -121,12 +177,26 @@ def main():
                 for entry in entries:
                     obj_name = f'articles/{str(uuid.uuid4())}.json'
                     upload_to_s3(json.dumps(entry), obj_name)
-                    send_queue_message(json.dumps({
-                        'feed': url,
+                    
+                    # Convert modified tuple to ISO format string with timezone
+                    fetched_at = None
+                    if modified:
+                        # modified is a time.struct_time, use first 6 elements for datetime
+                        dt = datetime(*modified[:6])
+                        # Format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+                        # Add milliseconds (000) and timezone offset (+00:00 for UTC)
+                        fetched_at = dt.strftime('%Y-%m-%dT%H:%M:%S.000+00:00')
+                    
+                    message_data = {
+                        'feedUrl': url,
+                        'articleUrl': entry['link'],
+                        's3path': obj_name,
                         'etag': etag,
-                        'modified': modified,
-                        's3_object': obj_name
-                    }))
+                        'fetchedAt': fetched_at
+                    }
+                    
+                    print(json.dumps(message_data))
+                    send_queue_message(json.dumps(message_data))
             except Exception as e:
                 logging.error(f"Error fetching feed from {url}: {e}")
 
