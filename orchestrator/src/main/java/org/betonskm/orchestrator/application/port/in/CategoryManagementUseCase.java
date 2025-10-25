@@ -16,4 +16,6 @@ public interface CategoryManagementUseCase {
   void decommissionCategory(DecommissionCategoryCommand command);
 
   Website addWebsiteToCategory(AddWebsiteToCategoryCommand command);
+
+  List<Website> getWebsitesInCategory(Integer categoryId);
 }

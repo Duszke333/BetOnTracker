@@ -38,4 +38,9 @@ public class WebsiteRepositoryAdapter implements WebsiteRepository {
   public Optional<Website> fetchById(UUID websiteId) {
     return repository.findById(websiteId).map(mapper::fromEntity);
   }
+
+  @Override
+  public List<Website> fetchWebsitesForCategory(Integer categoryId) {
+    return repository.getWebsitesByCategoryId(categoryId).stream().map(mapper::fromEntity).toList();
+  }
 }

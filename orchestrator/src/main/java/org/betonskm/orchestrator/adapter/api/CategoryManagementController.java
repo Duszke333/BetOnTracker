@@ -46,6 +46,7 @@ public class CategoryManagementController {
   private static final String FETCH_CATEGORIES_PATH = FEED_MANAGEMENT_PREFIX + "/categories/fetch";
   private static final String DECOMISSION_CATEGORY_PATH = FEED_MANAGEMENT_PREFIX + "/categories/{categoryId}/delete";
   private static final String ADD_WEBSITE_TO_FEED_PATH = FEED_MANAGEMENT_PREFIX + "/categories/{categoryId}/add";
+  private static final String GET_WEBSITES_PATH = FEED_MANAGEMENT_PREFIX + "/categories/{categoryId}/get";
 
   private final CategoryManagementUseCase categoryManagementUseCase;
   private final CategoryResponseMapper categoryResponseMapper;
@@ -112,5 +113,20 @@ public class CategoryManagementController {
     Website addedWebsite = categoryManagementUseCase.addWebsiteToCategory(command);
 
     return websiteResponseMapper.toAPIResponse(addedWebsite);
+  }
+
+  @GetMapping(path = GET_WEBSITES_PATH, produces = APPLICATION_JSON_VALUE)
+  @DefaultApiSecurity
+  @DefaultApiExceptions
+  @Operation(summary = "Get websites in category")
+  @ApiResponse(responseCode = "200", description = "Websites in category fetched successfully")
+  public List<WebsiteAPIResponse> getWebsitesInCategory(
+      @Parameter(description = "ID of the category to fetch websites from", required = true, example = "1")
+      @PathVariable("categoryId") @Positive Integer categoryId
+  ) {
+    log.info("[GET WEBSITES IN CATEGORY] Request received for categoryId: {}", categoryId);
+    List<Website> websites = categoryManagementUseCase.getWebsitesInCategory(categoryId);
+    log.info("[GET WEBSITES IN CATEGORY] Fetched {} websites in categoryId: {}", websites.size(), categoryId);
+    return websites.stream().map(websiteResponseMapper::toAPIResponse).toList();
   }
 }
