@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    @apply dark:bg-zinc-900 dark:text-white
+  }
+}
+
+p {
+  margin: 0;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+}
