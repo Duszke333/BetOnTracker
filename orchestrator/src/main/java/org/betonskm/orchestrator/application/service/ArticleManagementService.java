@@ -39,6 +39,11 @@ public class ArticleManagementService implements ArticleManagementUseCase {
   @Transactional
   public void createArticle(NewsArticleEvent event) {
 
+    if (articleRepository.existsByArticleLink(event.getArticleUrl())) {
+      log.info("Article already exists with link: {}", event.getArticleUrl());
+      return;
+    }
+
     Website website = websiteRepository.fetchByUrl(event.getFeedUrl())
         .orElseThrow(() -> new OrchestratorException(
             "Website not found with id: " + event.getFeedUrl()));
