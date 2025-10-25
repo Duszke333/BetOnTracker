@@ -60,7 +60,6 @@ jobs:
           export PRESIGNED_URL=$(curl -X GET -H "X-Auth-Token: $SCW_SECRET_KEY" \
             "https://api.scaleway.com/functions/v1beta1/regions/$SCW_DEFAULT_REGION/functions/$SCW_FUNCTION_ID/upload-url?content_length=$ARCHIVE_SIZE" | jq ."url")
 
-          echo $ARCHIVE_SIZE
           echo $PRESIGNED_URL
 
           curl -H "Content-Type: application/octet-stream" --upload-file $FUNCTION_ARCHIVE \

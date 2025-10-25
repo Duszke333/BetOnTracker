@@ -159,7 +159,7 @@ def send_queue_message(message_body):
 
     queue.send_message(MessageBody=message_body)
 
-def main():
+def main(event, context):
     logging.basicConfig(level=logging.INFO)
     logging.info("News module initialized.")
 
