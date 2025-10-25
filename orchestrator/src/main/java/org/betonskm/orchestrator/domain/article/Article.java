@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.betonskm.orchestrator.adapter.event.listener.summary.model.ArticleSummaryEvent;
 
 @Getter
 @Setter
@@ -30,4 +31,13 @@ public class Article {
   private Short importanceScore;
   private Short sentimentScore;
   private Short sourceReliabilityScore;
+
+  public void update(ArticleSummaryEvent event) {
+    this.oneLineSummary = event.getOneLineSummary();
+    this.keywords = event.getKeywords();
+    this.importanceScore = event.getImportanceScore();
+    this.sentimentScore = event.getSentimentScore();
+    this.sourceReliabilityScore = event.getSourceReliabilityScore();
+    this.s3SummaryPath = event.getArticlePath();
+  }
 }

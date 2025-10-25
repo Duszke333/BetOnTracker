@@ -3,6 +3,7 @@ package org.betonskm.orchestrator.application.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.adapter.event.listener.news.model.NewsArticleEvent;
+import org.betonskm.orchestrator.adapter.event.listener.summary.model.ArticleSummaryEvent;
 import org.betonskm.orchestrator.adapter.event.publisher.rawArticles.RawArticlesPublisher;
 import org.betonskm.orchestrator.application.command.PublishRawArticleCommand;
 import org.betonskm.orchestrator.application.port.in.ArticleManagementUseCase;
@@ -13,6 +14,7 @@ import org.betonskm.orchestrator.application.port.out.WebsiteRepository;
 import org.betonskm.orchestrator.configuration.exception.OrchestratorException;
 import org.betonskm.orchestrator.domain.article.Article;
 import org.betonskm.orchestrator.domain.website.Website;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,18 @@ public class ArticleManagementService implements ArticleManagementUseCase {
     categoryWebsiteRepository.fetchCategoryIdsByWebsiteId(website.getId()).forEach(categoryId -> {
       createArticleAndSend(event, categoryId);
     });
+  }
+
+  @Override
+  @Transactional
+  @Modifying
+  public void updateArticle(ArticleSummaryEvent event) {
+    Article article = articleRepository.fetchById(event.getArticleId())
+        .orElseThrow(() -> new OrchestratorException(
+            "Article not found with id: " + event.getArticleId()));
+
+    article.update(event);
+    articleRepository.save(article);
   }
 
   private void createArticleAndSend(NewsArticleEvent event, Integer categoryId) {
