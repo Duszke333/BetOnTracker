@@ -1,10 +1,12 @@
 package org.betonskm.orchestrator.application.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.adapter.event.listener.news.model.NewsArticleEvent;
 import org.betonskm.orchestrator.adapter.event.listener.summary.model.ArticleSummaryEvent;
 import org.betonskm.orchestrator.adapter.event.publisher.rawArticles.RawArticlesPublisher;
+import org.betonskm.orchestrator.application.command.FetchArticlesCommand;
 import org.betonskm.orchestrator.application.command.PublishRawArticleCommand;
 import org.betonskm.orchestrator.application.port.in.ArticleManagementUseCase;
 import org.betonskm.orchestrator.application.port.out.ArticleRepository;
@@ -52,6 +54,12 @@ public class ArticleManagementService implements ArticleManagementUseCase {
 
     article.update(event);
     articleRepository.save(article);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<Article> fetchArticles(FetchArticlesCommand command) {
+    return articleRepository.fetchArticlesForCategory(command.getCategoryId());
   }
 
   private void createArticleAndSend(NewsArticleEvent event, Integer categoryId) {
