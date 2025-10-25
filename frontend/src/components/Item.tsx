@@ -1,43 +1,40 @@
+import type Article from "../types/Article.ts";
 import Pill from "./Pill.tsx";
 
-export interface RssItem {
-  id: string;
-  title: string;
-  link: string;
-  description: string;
-  tags: string[];
-  pubDate: Date;
-}
-
 export default function Item({
-  link,
   title,
-  description,
-  tags,
-  pubDate,
+  articleUrl,
+  oneLineSummary,
+  keywords,
+  importanceScore,
+  sentimentScore,
   selectedTag,
   setSelectedTag,
-}: RssItem & {
+}: Article & {
   selectedTag: string | null;
   setSelectedTag: (category: string | null) => void;
 }) {
   return (
     <div className="mt-4 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg max-w-4xl w-full shadow-md">
-      <div className="flex flex-row items-center gap-2">
-        <a href={link} target="_blank" rel="noopener noreferrer">
+      <div className="flex flex-col gap-4">
+        <a href={articleUrl} target="_blank" rel="noopener noreferrer">
           <h2 className="text-xl font-bold hover:underline">{title}</h2>
         </a>
-        {tags.map((tag) => (
-          <Pill
-            key={tag}
-            name={tag}
-            selectedItem={selectedTag}
-            setSelectedItem={setSelectedTag}
-          />
-        ))}
+        <div className="flex flex-row gap-2 items-center overflow-x-auto">
+          {keywords.map((keyword) => (
+            <Pill
+              key={keyword}
+              name={keyword}
+              selectedItem={selectedTag}
+              setSelectedItem={setSelectedTag}
+            />
+          ))}
+        </div>
+        <p className="font-bold text-[#AA4344]">
+          Ważność: {importanceScore} Sentyment: {sentimentScore}
+        </p>
       </div>
-      <p className="font-bold text-[#AA4344]">{pubDate.toLocaleDateString()}</p>
-      <p className="mt-2">{description}</p>
+      <p className="mt-2">{oneLineSummary}</p>
     </div>
   );
 }

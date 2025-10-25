@@ -37,6 +37,8 @@ export default function ManagementPanel() {
       const createdCategory: Category = await res.json();
       setCategories((prev) => [...prev, createdCategory]);
       setNewCategoryName("");
+    } catch {
+      alert("Wystąpił błąd podczas dodawania kategorii.");
     } finally {
       setSubmitting(false);
     }
