@@ -1,5 +1,6 @@
 package org.betonskm.orchestrator.adapter.db.article;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.betonskm.orchestrator.configuration.database.StringListJsonConverter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -69,7 +71,7 @@ public class ArticleEntity {
   @Column(name = "short_summary", length = 2048)
   private String oneLineSummary;
 
-  @Convert(converter = StringListJsonConverter.class)
+  @Type(value = JsonBinaryType.class)
   @Column(name = "keywords", columnDefinition = "jsonb")
   private List<String> keywords = new ArrayList<>();
 
