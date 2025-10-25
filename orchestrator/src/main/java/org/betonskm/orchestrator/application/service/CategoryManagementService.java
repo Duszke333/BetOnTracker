@@ -3,6 +3,7 @@ package org.betonskm.orchestrator.application.service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.application.command.AddWebsiteToCategoryCommand;
@@ -52,6 +53,7 @@ public class CategoryManagementService implements CategoryManagementUseCase {
 
   @Override
   @Transactional
+  @Modifying
   public void decommissionCategory(DecommissionCategoryCommand command) {
     Category category = categoryRepository.fetchCategoryById(command.getCategoryId())
         .orElseThrow(() -> new OrchestratorException("Category with ID " + command.getCategoryId() + " not found"));
@@ -61,6 +63,16 @@ public class CategoryManagementService implements CategoryManagementUseCase {
       return;
     }
 
+    List<UUID> linkedWebsites = categoryWebsiteRepository.fetchWebsiteIdsByCategoryId(category.getId());
+    for (UUID websiteId : linkedWebsites) {
+      Website website = websiteRepository.fetchById(websiteId)
+          .orElseThrow(() -> new OrchestratorException("Website with ID " + websiteId + " not found"));
+      website.decrementReferenceCount();
+      websiteRepository.save(website);
+      log.info("[CATEGORY MANAGEMENT] Decremented reference count for website: {}", website);
+    }
+
+    categoryWebsiteRepository.deleteAllLinksForCategory(category.getId());
     category.setDecommissionedAt(timeProvider.now());
     categoryRepository.save(category);
     log.info("[CATEGORY MANAGEMENT] Decommissioned category: {}", category);
@@ -79,7 +91,8 @@ public class CategoryManagementService implements CategoryManagementUseCase {
       Website website = optionalWebsite.get();
       log.info("[CATEGORY MANAGEMENT] Website with URL {} already exists: {}", command.getWebsiteUrl(), website);
       if (categoryWebsiteRepository.link(category.getId(), website.getId())) {
-        log.info("[CATEGORY MANAGEMENT] Website with URL {} is already linked to category ID {}", command.getWebsiteUrl(), command.getCategoryId());
+        log.info("[CATEGORY MANAGEMENT] Website with URL {} is already linked to category ID {}",
+            command.getWebsiteUrl(), command.getCategoryId());
         return website;
       }
       website.incrementReferenceCount();

@@ -4,11 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.betonskm.orchestrator.adapter.db.category.CategoryMapper;
-import org.betonskm.orchestrator.adapter.db.website.WebsiteMapper;
 import org.betonskm.orchestrator.application.port.out.CategoryWebsiteRepository;
-import org.betonskm.orchestrator.domain.category.Category;
-import org.betonskm.orchestrator.domain.website.Website;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -36,5 +32,15 @@ public class CategoryWebsiteRepositoryAdapter implements CategoryWebsiteReposito
   @Override
   public List<Integer> fetchCategoryIdsByWebsiteId(UUID websiteId) {
     return categoryWebsiteEntityRepository.getCategoryIdByWebsiteId(websiteId);
+  }
+
+  @Override
+  public List<UUID> fetchWebsiteIdsByCategoryId(Integer categoryId) {
+    return categoryWebsiteEntityRepository.getLinkedWebsites(categoryId);
+  }
+
+  @Override
+  public void deleteAllLinksForCategory(Integer categoryId) {
+    categoryWebsiteEntityRepository.deleteAllByCategoryId(categoryId);
   }
 }

@@ -1,8 +1,10 @@
 package org.betonskm.orchestrator.application.service;
 
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.betonskm.orchestrator.adapter.event.downloader.ArticleSummaryDownloader;
 import org.betonskm.orchestrator.adapter.event.listener.news.model.NewsArticleEvent;
 import org.betonskm.orchestrator.adapter.event.listener.summary.model.ArticleSummaryEvent;
 import org.betonskm.orchestrator.adapter.event.publisher.rawArticles.RawArticlesPublisher;
@@ -15,6 +17,7 @@ import org.betonskm.orchestrator.application.port.out.CategoryWebsiteRepository;
 import org.betonskm.orchestrator.application.port.out.WebsiteRepository;
 import org.betonskm.orchestrator.configuration.exception.OrchestratorException;
 import org.betonskm.orchestrator.domain.article.Article;
+import org.betonskm.orchestrator.domain.summary.ArticleSummary;
 import org.betonskm.orchestrator.domain.website.Website;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -30,10 +33,16 @@ public class ArticleManagementService implements ArticleManagementUseCase {
   private final CategoryRepository categoryRepository;
   private final CategoryWebsiteRepository categoryWebsiteRepository;
   private final RawArticlesPublisher publisher;
+  private final ArticleSummaryDownloader articleSummaryDownloader;
 
   @Override
   @Transactional
   public void createArticle(NewsArticleEvent event) {
+
+    if (articleRepository.existsByArticleLink(event.getArticleUrl())) {
+      log.info("Article already exists with link: {}", event.getArticleUrl());
+      return;
+    }
 
     Website website = websiteRepository.fetchByUrl(event.getFeedUrl())
         .orElseThrow(() -> new OrchestratorException(
@@ -60,6 +69,20 @@ public class ArticleManagementService implements ArticleManagementUseCase {
   @Transactional(readOnly = true)
   public List<Article> fetchArticles(FetchArticlesCommand command) {
     return articleRepository.fetchArticlesForCategory(command.getCategoryId());
+  }
+
+  @Override
+  public ArticleSummary fetchArticleSummary(UUID articleId) {
+    Article article = articleRepository.fetchById(articleId).orElseThrow(
+        () -> new OrchestratorException("Article not found with id: " + articleId)
+    );
+
+    try {
+      return articleSummaryDownloader.downloadSummary(article.getS3SummaryPath());
+    } catch (Exception e) {
+      log.error("Error fetching article summary for article id: {}", articleId, e);
+      throw new OrchestratorException("Failed to fetch article summary for article id: " + articleId);
+    }
   }
 
   private void createArticleAndSend(NewsArticleEvent event, Integer categoryId) {

@@ -39,4 +39,9 @@ public class ArticleRepositoryAdapter implements ArticleRepository {
         .map(articleMapper::fromEntity)
         .collect(Collectors.toList());
   }
+
+  @Override
+  public boolean existsByArticleLink(String articleLink) {
+    return articleEntityRepository.existsByArticleLink(articleLink);
+  }
 }

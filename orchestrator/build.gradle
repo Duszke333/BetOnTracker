@@ -55,6 +55,7 @@ dependencies {
     implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
     implementation platform("software.amazon.awssdk:bom:${awsSdkVersion}")
     implementation "software.amazon.awssdk:sns"
+    implementation "software.amazon.awssdk:s3"
 
     // transactionOutbox
     implementation "com.gruelbox:transactionoutbox-spring:${transactionOutboxVersion}"

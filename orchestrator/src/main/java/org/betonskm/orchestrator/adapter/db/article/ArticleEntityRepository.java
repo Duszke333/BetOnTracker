@@ -17,4 +17,6 @@ public interface ArticleEntityRepository extends JpaRepository<ArticleEntity, UU
       + "ORDER BY a.createdAt DESC "
       + "LIMIT 100")
   List<ArticleEntity> findArticlesForCategory(Integer categoryId, OffsetDateTime since);
+
+  boolean existsByArticleLink(String articleLink);
 }
