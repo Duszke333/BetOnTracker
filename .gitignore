@@ -254,3 +254,4 @@ __marimo__/
 *.sublime-project
 *.sublime-workspace
 .zed/
+package/
