@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import type { Category } from "../types/Category.ts";
+import type { Website } from "../types/Website.ts";
+import Pill from "./Pill.tsx";
 import TopBar from "./TopBar.tsx";
 
 export default function ManagementPanel() {
   const [submitting, setSubmitting] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [websites, setWebsites] = useState<Website[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/v1/feed-management/categories/fetch")
@@ -44,13 +48,16 @@ export default function ManagementPanel() {
     }
   };
 
-  const deleteCategory = async (categoryId: string) => {
+  const getWebsites = async (categoryId: string) => {
+    if (selectedCategory === categoryId) {
+      setSelectedCategory(null);
+      setWebsites([]);
+      return;
+    }
+
     try {
       const res = await fetch(
-        `/api/v1/feed-management/categories/${categoryId}/delete`,
-        {
-          method: "DELETE",
-        },
+        `/api/v1/feed-management/categories/${categoryId}/get`,
       );
 
       if (!res.ok) {
@@ -58,11 +65,11 @@ export default function ManagementPanel() {
         return;
       }
 
-      setCategories((prev) =>
-        prev.filter((category) => category.categoryId !== categoryId),
-      );
+      const returnedWebsites: Website[] = await res.json();
+      setWebsites(returnedWebsites);
+      setSelectedCategory(categoryId);
     } catch {
-      alert("Wystąpił błąd podczas usuwania kategorii.");
+      alert("Wystąpił błąd podczas pobierania stron.");
     }
   };
 
@@ -104,31 +111,29 @@ export default function ManagementPanel() {
         </div>
         <div className="grid grid-cols-5 gap-6 mt-4">
           {categories.map((category: Category) => (
-            <button
-              type="button"
-              key={category.categoryId}
-              className="category-item p-4 text-center bg-zinc-100 dark:bg-zinc-900 rounded-3xl shadow-md cursor-pointer"
-              onClick={() => deleteCategory(category.categoryId)}
-            >
-              <span className="category-name">{category.categoryName}</span>
-              <div className="trash-icon hidden">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M3 6h18" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                </svg>
-              </div>
-            </button>
+            <div key={category.categoryId}>
+              <button
+                type="button"
+                className="w-full p-4 text-center bg-zinc-100 dark:bg-zinc-900 rounded-3xl shadow-md cursor-pointer"
+                onClick={() => getWebsites(category.categoryId)}
+              >
+                <span className="category-name">{category.categoryName}</span>
+              </button>
+              {selectedCategory === category.categoryId && (
+                <div className="flex flex-wrap mt-2 gap-2">
+                  {websites.map((website) => (
+                    <Pill
+                      key={website.id}
+                      name={website.url}
+                      selectedItem={null}
+                      setSelectedItem={() => {
+                        return;
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>
