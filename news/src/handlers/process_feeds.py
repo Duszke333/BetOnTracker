@@ -162,13 +162,12 @@ def send_queue_message(message_body):
 def main():
     logging.basicConfig(level=logging.INFO)
     logging.info("News module initialized.")
+    load_dotenv()
 
-    urls = [
-        'https://www.telepolis.pl/rss'
-    ]
+    websites = requests.get(os.environ.get('ORCHESTRATOR_URL') + '/api/v1/websites/fetch').json()['websites']
 
     with ThreadPoolExecutor(max_workers=5) as executor:
-        futures = {executor.submit(parse_feed, url): url for url in urls}
+        futures = {executor.submit(parse_feed, website['url'], website['etag'], website['lastFetchedAt']): website for website in websites}
         for future in futures:
             url = futures[future]
             try:
@@ -188,13 +187,14 @@ def main():
                         fetched_at = dt.strftime('%Y-%m-%dT%H:%M:%S.000+00:00')
                     
                     message_data = {
-                        'feedUrl': url,
+                        'feedUrl': url['url'],
                         'articleUrl': entry['link'],
-                        'articleTitle': entry['title'],
+                        'title': entry['title'],
                         's3path': obj_name,
                         'etag': etag,
                         'fetchedAt': fetched_at
                     }
+                    print(json.dumps(message_data))
                     send_queue_message(json.dumps(message_data))
                     logging.info(f"Sent message for article: {entry['title']}")
             except Exception as e:
