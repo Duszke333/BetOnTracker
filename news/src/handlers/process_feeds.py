@@ -190,13 +190,13 @@ def main(event, context):
                     message_data = {
                         'feedUrl': url,
                         'articleUrl': entry['link'],
+                        'articleTitle': entry['title'],
                         's3path': obj_name,
                         'etag': etag,
                         'fetchedAt': fetched_at
                     }
-                    
-                    print(json.dumps(message_data))
                     send_queue_message(json.dumps(message_data))
+                    logging.info(f"Sent message for article: {entry['title']}")
             except Exception as e:
                 logging.error(f"Error fetching feed from {url}: {e}")
 
