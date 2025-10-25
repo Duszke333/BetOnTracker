@@ -22,5 +22,6 @@ public class Article {
   private String articleLink;
   private String s3ArticleContentPath;
   private String s3SummaryPath;
+  private String title;
   private OffsetDateTime createdAt;
 }

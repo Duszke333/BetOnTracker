@@ -45,6 +45,7 @@ public class ArticleManagementService implements ArticleManagementUseCase {
         .categoryId(categoryId)
         .articleLink(event.getArticleUrl())
         .s3ArticleContentPath(event.getS3path())
+        .title(event.getTitle())
         .build();
 
     Article savedArticle = articleRepository.save(article);
