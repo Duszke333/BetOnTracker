@@ -39,58 +39,6 @@ jobs:
     - name: Push the orchestrator Docker Image
       run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-orchestrator:latest
 
-  deploy-orchestrator-container:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy Orchestrator Serverless Container
-        run: |
-          export CONTAINER_ID=$(curl -X POST \
-            -H "X-Auth-Token: $SCW_SECRET_KEY" \
-            -H "Content-Type: application/json" \
-            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
-            -d '{
-              "name": "orchestrator",
-              "namespace_id": "$CONTAINER_NAMESPACE_ID",
-              "registry_image": "$ORCHESTRATOR_IMAGE_NAME"
-            }' | jq -r ."id")
-
-          echo "Deployed Orchestrator Container ID: $CONTAINER_ID"
-
-          curl -X POST \
-            -H "X-Auth-Token: $SCW_SECRET_KEY" \
-            -H "Content-Type: application/json" \
-            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers/$CONTAINER_ID/deploy"
-
-  deploy-frontend-container:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy Frontend Serverless Container
-        run: |
-          export CONTAINER_ID=$(curl -X POST \
-            -H "X-Auth-Token: $SCW_SECRET_KEY" \
-            -H "Content-Type: application/json" \
-            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers" \
-            -d '{
-              "name": "frontend",
-              "namespace_id": "$CONTAINER_NAMESPACE_ID",
-              "registry_image": "$FRONTEND_IMAGE_NAME"
-            }')
-
-          echo "Deployed Frontend Container ID: $CONTAINER_ID"
-
-          curl -X POST \
-            -H "X-Auth-Token: $SCW_SECRET_KEY" \
-            -H "Content-Type: application/json" \
-            "https://api.scaleway.com/containers/v1beta1/regions/$SCW_DEFAULT_REGION/containers/$CONTAINER_ID/deploy"
-
   deploy-function:
     runs-on: ubuntu-latest
     steps:
