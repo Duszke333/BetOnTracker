@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.betonskm'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 description = 'orchestrator'
 
 java {
@@ -49,6 +49,16 @@ dependencies {
     // mapstruct
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    // AWS
+    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:${springCloudAwsVersion}")
+    implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
+    implementation platform("software.amazon.awssdk:bom:${awsSdkVersion}")
+    implementation "software.amazon.awssdk:sns"
+
+    // transactionOutbox
+    implementation "com.gruelbox:transactionoutbox-spring:${transactionOutboxVersion}"
+    implementation "com.gruelbox:transactionoutbox-jackson:${transactionOutboxVersion}"
 
     // utilities
     implementation "com.google.guava:guava:${guavaVersion}"

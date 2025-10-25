@@ -1,6 +1,7 @@
 package org.betonskm.orchestrator.adapter.db.category;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.application.port.out.CategoryRepository;
@@ -23,5 +24,15 @@ public class CategoryRepositoryAdapter implements CategoryRepository {
   @Override
   public List<Category> fetchAllActiveCategories() {
     return repository.findAllActiveCategories().stream().map(mapper::fromEntity).toList();
+  }
+
+  @Override
+  public Optional<Category> fetchCategoryById(Integer id) {
+    return repository.findById(id).map(mapper::fromEntity);
+  }
+
+  @Override
+  public Optional<String> fetchCategoryNameById(Integer id) {
+    return repository.findNameById(id);
   }
 }

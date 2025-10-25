@@ -17,25 +17,25 @@ session = boto3.session.Session()
 
 s3_client = session.client(
     service_name='s3',
-    region_name='fr-par',
+    region_name='pl-waw',
     use_ssl=True,
-    endpoint_url='https://hackathon-team-5.s3.fr-par.scw.cloud/test',
+    endpoint_url='https://hackathon-team-5-pl.s3.pl-waw.scw.cloud',
     aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
 )
 
-bucket_name = 'hackathon-team-5'
-object_name = f'presigned-upload-{str(uuid.uuid4())}.txt'
+bucket_name = 'hackathon-team-5-pl'
+object_name = f'test.txt'
 fields = {
         "acl": "private",
         "Cache-Control": "nocache",
-        "Content-Type": "image/jpeg"
+        "Content-Type": "text/plain"
     }
 conditions = [
     {"key": object_name},
     {"acl": "private"},
     {"Cache-Control": "nocache"},
-    {"Content-Type": "image/jpeg"}
+    {"Content-Type": "text/plain"}
 ]
 expiration = 120 # Max two minutes to start upload
 

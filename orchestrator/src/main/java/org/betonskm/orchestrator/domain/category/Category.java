@@ -6,15 +6,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
 
-  private Long id;
+  private Integer id;
   private String name;
   private OffsetDateTime createdAt;
   private OffsetDateTime decommissionedAt;
