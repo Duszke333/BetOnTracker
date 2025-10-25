@@ -1,0 +1,75 @@
+name: Build & Deploy to Scaleway
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - infra
+
+env:
+  SCW_PROJECT_ID: "d6f62684-5d48-4151-97d7-3364fa5ac43a"
+  SCW_SECRET_KEY: "47bc2d6b-0c9c-4a49-8b88-d0ae69f42def"
+  SCW_DEFAULT_REGION: pl-waw
+  SCW_FUNCTION_ID: "778934ba-6e58-4430-b684-a3a1a2b66827"
+  CONTAINER_NAMESPACE_ID: "6e9340d5-22f2-4cc1-9cb4-d8e538682a12"
+  ORCHESTRATOR_CONTAINER_ID: "9dfc5571-df8f-469b-8c3e-c869fe4660cb"
+  ORCHESTRATOR_IMAGE_NAME: "rg.pl-waw.scw.cloud/funcscwbetonskmdbrk79no/betontracker-orchestrator:latest"
+  FRONTEND_IMAGE_NAME: "rg.pl-waw.scw.cloud/funcscwbetonskmdbrk79no/betontracker-frontend:latest"
+  FRONTEND_CONTAINER_ID: "c3d4bbd2-7436-43ad-94d0-68b20c0b209a"
+  FUNCTION_NAMESPACE_ID: "d803573c-200a-46fe-8afe-3c1e6d67c8b3"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Login to Scaleway Container Registry
+      uses: docker/login-action@v3
+      with:
+        username: nologin
+        password: ${{ secrets.SCALEWAY_API_KEY }}
+        registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
+    - name: Build frontend image
+      run: cd frontend && docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-frontend:latest
+    - name: Push the frontend Docker Image
+      run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-frontend:latest
+    - name: Build orchestrator image
+      run: cd orchestrator && docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-orchestrator:latest
+    - name: Push the orchestrator Docker Image
+      run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/betontracker-orchestrator:latest
+
+  deploy-function:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build function zip
+        run: |
+          cd news/src
+          pip install -r requirements.txt --target ./package
+          zip -r ../../function.zip handlers/ package/
+          cd ../..
+
+      - name: Upload function code
+        run: |
+          export FUNCTION_ARCHIVE="function.zip"
+          export ARCHIVE_SIZE=$(stat -c%s "$FUNCTION_ARCHIVE")
+
+          export PRESIGNED_URL=$(curl -X GET -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/functions/v1beta1/regions/$SCW_DEFAULT_REGION/functions/$SCW_FUNCTION_ID/upload-url?content_length=$ARCHIVE_SIZE" | jq ."url")
+
+          echo $ARCHIVE_SIZE
+          echo $PRESIGNED_URL
+
+          curl -H "Content-Type: application/octet-stream" --upload-file $FUNCTION_ARCHIVE \
+            -H "Content-Length: $ARCHIVE_SIZE" $PRESIGNED_URL
+
+
+      - name: Deploy Serverless Function
+        run: |
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            "https://api.scaleway.com/functions/v1beta1/regions/$SCW_DEFAULT_REGION/functions/$SCW_FUNCTION_ID/deploy"
