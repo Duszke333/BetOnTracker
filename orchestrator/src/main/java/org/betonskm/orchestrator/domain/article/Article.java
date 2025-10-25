@@ -38,6 +38,6 @@ public class Article {
     this.importanceScore = event.getImportanceScore();
     this.sentimentScore = event.getSentimentScore();
     this.sourceReliabilityScore = event.getSourceReliabilityScore();
-    this.s3SummaryPath = event.getArticlePath();
+    this.s3SummaryPath = event.getArticleSummaryPath();
   }
 }

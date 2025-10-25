@@ -16,7 +16,7 @@ import lombok.ToString;
 public class ArticleSummaryEvent {
 
   private UUID articleId;
-  private String articlePath;
+  private String articleSummaryPath;
   private String oneLineSummary;
   private List<String> keywords;
   private Short importanceScore;
