@@ -16,6 +16,7 @@ public class NewsArticleEvent {
 
   private String feedUrl;
   private String articleUrl;
+  private String title;
   private String s3path;
   private String etag;
   private OffsetDateTime fetchedAt;
