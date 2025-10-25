@@ -27,3 +27,36 @@ spring:
       default_schema: public
       jdbc:
         time_zone: UTC
+
+aws:
+  sqs:
+    endpoint: ${AWS_SQS_ENDPOINT:https://sqs.mnq.fr-par.scaleway.com}
+    region: ${AWS_SQS_REGION:fr-par}
+    news-articles-queue-url: ${NEWS_ARTICLES_SQS_URL:https://sqs.mnq.fr-par.scaleway.com/000000000000/news-articles-queue}
+    access-key-id: ${SQS_ADMIN_ACCESS_KEY_ID:x}
+    secret-key: ${SQS_ADMIN_SECRET_KEY:x}
+    article-summary-queue-url: ${ARTICLE_SUMMARY_SQS_URL:https://sqs.mnq.fr-par.scaleway.com/000000000000/queue-summaries}
+  sns:
+    endpoint: ${AWS_SNS_ENDPOINT:https://sqs.mnq.fr-par.scaleway.com}
+    region: ${AWS_SNS_REGION:fr-par}
+    summarize-articles-topic-arn: ${SUMMARIZE_ARTICLES_SNS_ARN:arn:aws:sns:fr-par:000000000000:summarize-articles-topic}
+    access-key-id: ${SNS_ADMIN_ACCESS_KEY_ID:x}
+    secret-key: ${SNS_ADMIN_SECRET_KEY:x}
+
+app:
+  scheduling:
+    max-concurrent-tasks: 20
+    publish-event:
+      scheduler-enabled: true # whether to enable the scheduler
+      attempt-frequency: 1M # how often to try to re-send events
+      block-after-attempts: 15 # how many failed attempts before blocking further attempts
+      flush-batch-size: 4096 # how many events to process in a single batch
+      fixed-delay: 15m # delay between scheduler runs
+      table-name: txno_outbox
+    inbox-event:
+      scheduler-enabled: true # whether to enable the scheduler
+      attempt-frequency: 1M # how often to try to re-send events
+      block-after-attempts: 15 # how many failed attempts before blocking further attempts
+      flush-batch-size: 4096 # how many events to process in a single batch
+      fixed-delay: 15m # delay between scheduler runs
+      table-name: txno_inbox
