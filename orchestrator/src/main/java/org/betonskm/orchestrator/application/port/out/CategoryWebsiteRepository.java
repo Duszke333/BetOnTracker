@@ -10,4 +10,8 @@ public interface CategoryWebsiteRepository {
   boolean link(Integer categoryId, UUID websiteId);
 
   List<Integer> fetchCategoryIdsByWebsiteId(UUID websiteId);
+
+  List<UUID> fetchWebsiteIdsByCategoryId(Integer categoryId);
+
+  void deleteAllLinksForCategory(Integer categoryId);
 }

@@ -2,6 +2,7 @@ package org.betonskm.orchestrator.application.port.out;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.betonskm.orchestrator.domain.website.Website;
 
 public interface WebsiteRepository {
@@ -10,4 +11,6 @@ public interface WebsiteRepository {
   Optional<Website> fetchByUrl(String url);
 
   List<Website> fetchActiveWebsites();
+
+  Optional<Website> fetchById(UUID websiteId);
 }

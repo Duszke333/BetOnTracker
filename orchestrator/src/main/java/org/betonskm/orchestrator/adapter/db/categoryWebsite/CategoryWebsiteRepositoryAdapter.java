@@ -37,4 +37,14 @@ public class CategoryWebsiteRepositoryAdapter implements CategoryWebsiteReposito
   public List<Integer> fetchCategoryIdsByWebsiteId(UUID websiteId) {
     return categoryWebsiteEntityRepository.getCategoryIdByWebsiteId(websiteId);
   }
+
+  @Override
+  public List<UUID> fetchWebsiteIdsByCategoryId(Integer categoryId) {
+    return categoryWebsiteEntityRepository.getLinkedWebsites(categoryId);
+  }
+
+  @Override
+  public void deleteAllLinksForCategory(Integer categoryId) {
+    categoryWebsiteEntityRepository.deleteAllByCategoryId(categoryId);
+  }
 }

@@ -2,6 +2,7 @@ package org.betonskm.orchestrator.adapter.db.website;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.application.port.out.WebsiteRepository;
@@ -31,5 +32,10 @@ public class WebsiteRepositoryAdapter implements WebsiteRepository {
     return repository.findActiveWebsites().stream()
         .map(mapper::fromEntity)
         .toList();
+  }
+
+  @Override
+  public Optional<Website> fetchById(UUID websiteId) {
+    return repository.findById(websiteId).map(mapper::fromEntity);
   }
 }
