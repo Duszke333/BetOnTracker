@@ -1,5 +1,6 @@
 package org.betonskm.orchestrator.adapter.db.categoryWebsite;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,23 +17,24 @@ import org.springframework.stereotype.Component;
 public class CategoryWebsiteRepositoryAdapter implements CategoryWebsiteRepository {
 
   private final CategoryWebsiteEntityRepository categoryWebsiteEntityRepository;
-  private final CategoryMapper categoryMapper;
-  private final WebsiteMapper websiteMapper;
 
   @Override
-  public boolean link(Category category, Website website) {
-    CategoryWebsiteId id = new CategoryWebsiteId(category.getId(), website.getId());
+  public boolean link(Integer categoryId, UUID websiteId) {
+    CategoryWebsiteId id = new CategoryWebsiteId(categoryId, websiteId);
     if (categoryWebsiteEntityRepository.existsById(id)) {
-      log.info("Link between category {} and website {} already exists", category.getId(), website.getId());
+      log.info("Link between category {} and website {} already exists", categoryId, websiteId);
       return false;
     }
     CategoryWebsite link = CategoryWebsite.builder()
         .id(id)
-        .category(categoryMapper.toEntity(category))
-        .websiteEntity(websiteMapper.toEntity(website))
         .build();
     categoryWebsiteEntityRepository.save(link);
-    log.info("Linked category {} with website {}", category.getId(), website.getId());
+    log.info("Linked category {} with website {}", categoryId, websiteId);
     return true;
+  }
+
+  @Override
+  public List<Integer> fetchCategoryIdsByWebsiteId(UUID websiteId) {
+    return categoryWebsiteEntityRepository.getCategoryIdByWebsiteId(websiteId);
   }
 }

@@ -5,6 +5,8 @@ import io.awspring.cloud.sqs.annotation.SqsListenerAcknowledgementMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.betonskm.orchestrator.adapter.event.listener.news.model.NewsArticleEvent;
+import org.betonskm.orchestrator.application.port.in.ArticleManagementUseCase;
+import org.betonskm.orchestrator.application.port.in.NewsArticleManagementUseCase;
 import org.betonskm.orchestrator.configuration.transactionoutbox.TransactionInbox;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class NewsArticlesListener {
 
+  private final NewsArticleManagementUseCase newsArticleManagementUseCase;
+  private final ArticleManagementUseCase articleManagementUseCase;
   private final TransactionInbox transactionInbox;
 
   @Transactional
@@ -24,6 +28,8 @@ public class NewsArticlesListener {
   }
 
   public void process(NewsArticleEvent event) {
-    log.info("[NEWS LISTENER] Processing");
+    log.info("[NEWS LISTENER] Processing event: {}", event);
+    newsArticleManagementUseCase.updateWebsite(event);
+    articleManagementUseCase.createArticle(event);
   }
 }
